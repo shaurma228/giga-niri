@@ -15,6 +15,13 @@ cursor {
 
 prefer-no-csd
 
+// niri рисует только через Intel (к нему подключены все мониторы).
+// Не открывать NVIDIA, чтобы она засыпала, когда не нужна.
+// Игры и тяжёлые программы будят её сами: prime-run <программа>.
+debug {
+    ignore-drm-device "/dev/dri/renderD129"
+}
+
 // Параметры блюра для всех окон и панелей с background-effect { blur true; }
 blur {
     passes 3
