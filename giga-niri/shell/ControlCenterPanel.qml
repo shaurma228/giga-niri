@@ -64,7 +64,7 @@ ColumnLayout {
 
     // Плитка — скруглённая подложка Пункта управления
     component Tile: Rectangle {
-        radius: Theme.tileRadius
+        radius: Theme.innerRadius
         color: Theme.tile
         border.width: 1
         border.color: "#12ffffff"

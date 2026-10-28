@@ -51,7 +51,7 @@ ColumnLayout {
             Rectangle {
                 implicitWidth: 36
                 implicitHeight: 36
-                radius: 10
+                radius: Theme.innerRadius
                 color: muteMouse.containsMouse ? Theme.rowHover : Theme.row
                 Icon {
                     anchors.centerIn: parent

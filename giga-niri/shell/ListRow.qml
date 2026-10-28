@@ -17,7 +17,7 @@ Rectangle {
 
     Layout.fillWidth: true
     implicitHeight: 48
-    radius: 12
+    radius: Theme.innerRadius
     color: active ? Theme.rowActive : (mouse.containsMouse ? Theme.rowHover : "transparent")
     Behavior on color { ColorAnimation { duration: 120 } }
 

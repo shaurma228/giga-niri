@@ -40,7 +40,7 @@ layer-rule {
 // Spotlight (fuzzel): настоящий блюр — размывает и окна под собой. Открыт секунды.
 layer-rule {
     match namespace="^launcher$"
-    geometry-corner-radius 26
+    geometry-corner-radius 22
     shadow {
         on
         softness 60
@@ -57,7 +57,7 @@ layer-rule {
 // Поиск по системе (giga-niri/shell/SearchWindow.qml), как Spotlight
 layer-rule {
     match namespace="^giga-search$"
-    geometry-corner-radius 26
+    geometry-corner-radius 22
     shadow {
         on
         softness 60
@@ -91,7 +91,7 @@ layer-rule {
 // Уведомления
 layer-rule {
     match namespace="^notifications$"
-    geometry-corner-radius 20
+    geometry-corner-radius 22
     shadow {
         on
         softness 30

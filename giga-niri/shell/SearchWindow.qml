@@ -223,7 +223,7 @@ Scope {
             id: card
             width: parent.width
             implicitHeight: column.implicitHeight
-            radius: 26
+            radius: Theme.radius
             color: Theme.card
             border.width: 1
             border.color: Theme.cardBorder
@@ -329,7 +329,7 @@ Scope {
                             x: 8
                             width: parent.width - 16
                             height: 44
-                            radius: 10
+                            radius: Theme.innerRadius
                             color: item.index === search.sel ? Theme.blue : (rowMouse.containsMouse ? Theme.rowHover : "transparent")
 
                             RowLayout {

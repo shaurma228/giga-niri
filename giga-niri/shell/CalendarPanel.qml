@@ -89,7 +89,7 @@ ColumnLayout {
                 required property var modelData
                 implicitWidth: 30
                 implicitHeight: 30
-                radius: 10
+                radius: Theme.innerRadius
                 color: nav.containsMouse ? Theme.rowHover : "transparent"
                 Icon { anchors.centerIn: parent; code: modelData.code; size: 18; color: Theme.subtle }
                 MouseArea {

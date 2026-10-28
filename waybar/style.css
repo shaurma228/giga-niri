@@ -17,7 +17,7 @@ window#waybar {
 tooltip {
     background: rgba(30, 30, 32, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
+    border-radius: 14px;
 }
 
 tooltip label {

@@ -108,7 +108,7 @@ ColumnLayout {
                 Layout.leftMargin: 8
                 Layout.rightMargin: 8
                 implicitHeight: 40
-                radius: 12
+                radius: Theme.innerRadius
                 color: Theme.row
                 border.width: 1
                 border.color: psk.activeFocus ? Theme.blue : Theme.track
