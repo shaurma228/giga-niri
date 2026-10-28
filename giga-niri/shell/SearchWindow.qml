@@ -257,7 +257,12 @@ Scope {
                         Component.onCompleted: forceActiveFocus()
 
                         Keys.onPressed: event => {
-                            if (event.key === Qt.Key_Escape) { search.open = false; event.accepted = true }
+                            // Esc и то же сочетание, что открывает поиск (Alt+Space), закрывают его.
+                            // Окно держит клавиатуру целиком, поэтому до niri нажатие не доходит.
+                            if (event.key === Qt.Key_Escape
+                                    || (event.key === Qt.Key_Space && (event.modifiers & Qt.AltModifier))) {
+                                search.open = false; event.accepted = true
+                            }
                             else if (event.key === Qt.Key_Down || (event.key === Qt.Key_Tab && !(event.modifiers & Qt.ShiftModifier))) {
                                 search.sel = Math.min(search.sel + 1, search.results.length - 1); event.accepted = true
                             } else if (event.key === Qt.Key_Up || event.key === Qt.Key_Backtab) {
