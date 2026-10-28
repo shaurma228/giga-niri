@@ -1,0 +1,16 @@
+// Клавиатура и тачпад. Раскладки и переключение как в KDE (kxkbrc, Meta+Space).
+
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "grp:win_space_toggle"
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        dwt
+    }
+}

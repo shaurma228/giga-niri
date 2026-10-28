@@ -1,0 +1,12 @@
+// giga-niri — Tokyo Glass для niri 26.04
+// https://github.com/shaurma228/giga-niri
+//
+// После правок: niri validate
+
+include "./cfg/input.kdl"
+include "./cfg/outputs.kdl"
+include "./cfg/layout.kdl"
+include "./cfg/misc.kdl"
+include "./cfg/autostart.kdl"
+include "./cfg/rules.kdl"
+include "./cfg/binds.kdl"

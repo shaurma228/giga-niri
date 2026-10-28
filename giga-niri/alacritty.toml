@@ -1,0 +1,6 @@
+# Alacritty внутри niri. Берёт ваш обычный конфиг и переопределяет поверх него
+# только то, что нужно оформлению. Сам ~/.config/alacritty не меняется.
+# Тема Tokyo Night и прозрачность появятся на этапе 2.
+
+[general]
+import = ["~/.config/alacritty/alacritty.toml"]

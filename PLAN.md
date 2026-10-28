@@ -51,18 +51,19 @@ giga-niri/
 
 ## Этапы
 
-### 0. Безопасность (почти готово)
+### 0. Безопасность (готово)
 - [x] Снимок KDE/GTK/Qt/dconf: `~/.config/niri-themes-backup/kde-snapshot-2026-10-28/`
 - [x] Старое оформление (CachyOS + Noctalia) снято в бэкап
-- [ ] `scripts/check-kde.sh`
-- [ ] `scripts/install.sh` / `uninstall.sh` с белым списком
+- [x] `scripts/check-kde.sh`
+- [x] `scripts/install.sh` / `uninstall.sh` с белым списком
 
 ### 1. Базовый рабочий niri
-- [ ] Минимальный `config.kdl`: раскладка `us,ru`, тачпад, бинды
-- [ ] Мониторы: `output "HDMI-A-1"` 2560x1440@100 (основной), `output "eDP-1"` 1920x1080@144. Бинды переноса окон и рабочих столов между мониторами
-- [ ] Аварийные бинды: `Ctrl+Alt+Delete` выход, `Mod+Return` терминал, `Mod+Shift+/` подсказки
-- [ ] `environment {}`: `QT_QPA_PLATFORM wayland`, `ELECTRON_OZONE_PLATFORM_HINT auto`. Qt-тему оставить `kde`, чтобы приложения выглядели как в Plasma
-- [ ] Проверка: вход в сессию, все бинды, `niri validate`, `check-kde.sh`
+- [x] Минимальный `config.kdl`: раскладка `us,ru`, тачпад, бинды
+- [x] Мониторы: `output "HDMI-A-1"` 2560x1440@100 (основной), `output "eDP-1"` 1920x1080@144. Бинды переноса окон и рабочих столов между мониторами
+- [x] Аварийные бинды: `Ctrl+Alt+Delete` выход, `Mod+Return` терминал, `Mod+Shift+/` подсказки
+- [x] `environment {}`: `ELECTRON_OZONE_PLATFORM_HINT auto`, `QT_QPA_PLATFORMTHEME kde` (Qt-приложения как в Plasma). Курсор breeze как в KDE, агент polkit от KDE
+- [x] `niri validate`, `check-kde.sh`
+- [ ] Вход в сессию (проверяет пользователь): бинды, раскладка Meta+Space, оба монитора, polkit
 
 ### 2. Стекло и рамки (сердце Tokyo Glass)
 - [ ] `layout`: gaps 16, `focus-ring` градиент `#7aa2f7 → #bb9af7` `in="oklch longer hue"`, неактивный тусклый

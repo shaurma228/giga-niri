@@ -1,0 +1,7 @@
+// Правила окон. Скругления, блюр и прозрачность добавятся на этапе 2.
+
+// Картинка в картинке (Firefox, Chrome) — плавающим окном
+window-rule {
+    match title="^Picture[- ]in[- ][Pp]icture$"
+    open-floating true
+}

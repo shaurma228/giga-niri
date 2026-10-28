@@ -1,0 +1,22 @@
+// Окружение и мелочи. Переменные действуют только на программы,
+// запущенные из niri, и не попадают в сессию KDE.
+
+environment {
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    // Qt-приложения выглядят как в Plasma (plasma-integration)
+    QT_QPA_PLATFORMTHEME "kde"
+}
+
+// Курсор как в KDE
+cursor {
+    xcursor-theme "breeze_cursors"
+    xcursor-size 24
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/niri-%Y-%m-%d_%H-%M-%S.png"
+
+// Подсказка по клавишам при старте. Отключить: skip-at-startup
+hotkey-overlay {
+}

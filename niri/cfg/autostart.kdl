@@ -1,0 +1,4 @@
+// Автозапуск. xwayland-satellite niri запускает сам.
+
+// Окно ввода пароля для pkexec и программ, которым нужны права root
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
