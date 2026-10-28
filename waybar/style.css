@@ -63,6 +63,7 @@ tooltip label {
 #tray,
 #language,
 #network,
+#bluetooth,
 #pulseaudio,
 #battery,
 #clock {
@@ -83,6 +84,15 @@ tooltip label {
 }
 
 #network.disconnected {
+    color: #565f89;
+}
+
+#bluetooth {
+    color: #7aa2f7;
+}
+
+#bluetooth.off,
+#bluetooth.disabled {
     color: #565f89;
 }
 

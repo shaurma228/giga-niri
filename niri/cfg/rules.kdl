@@ -38,6 +38,23 @@ layer-rule {
     }
 }
 
+// Всплывающие карточки (giga-niri/shell): настоящий блюр и тень, как у лаунчера
+layer-rule {
+    match namespace="^giga-popup$"
+    geometry-corner-radius 20
+    shadow {
+        on
+        softness 40
+        spread 4
+        offset x=0 y=8
+        color "#0000008c"
+    }
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 // Уведомления: xray-блюр, как у бара
 layer-rule {
     match namespace="^notifications$"

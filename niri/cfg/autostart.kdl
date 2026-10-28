@@ -6,6 +6,9 @@ spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 // Бар (~/.config/waybar). Если не запустится, все бинды работают и без него.
 spawn-at-startup "waybar"
 
+// Всплывающие карточки Wi-Fi, Bluetooth, звука и календаря (giga-niri/shell, Quickshell)
+spawn-at-startup "qs" "-p" "/home/goydaslav/.config/giga-niri/shell"
+
 // Простой как в KDE: на зарядке ничего, от батареи приглушение и гашение экрана
 // (giga-niri/hypridle.conf, giga-niri/idle.sh)
 spawn-sh-at-startup "command -v hypridle >/dev/null && exec hypridle -c ~/.config/giga-niri/hypridle.conf"

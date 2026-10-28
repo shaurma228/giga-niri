@@ -18,6 +18,7 @@
 - **Обои** «ночной город и боке», нарисованы скриптом ([scripts/make-wallpaper.py](scripts/make-wallpaper.py)), без проблем с лицензией.
 - **Бар** waybar: рабочие столы, заголовок окна, трей, раскладка, Wi‑Fi, звук, батарея, часы с календарём.
 - **Лаунчер** fuzzel, **уведомления** mako, **меню питания** на fuzzel с подтверждением.
+- **Всплывающие карточки** на Quickshell ([giga-niri/shell](giga-niri/shell)): Wi‑Fi (сети вокруг, подключение с паролем), Bluetooth (поиск, сопряжение), звук (громкость, микрофон, выбор выхода), календарь. Открываются кликом по модулям бара, закрываются повторным кликом, Esc или кликом мимо.
 - **Блокировка** hyprlock: размытые обои, часы, поле пароля с градиентной рамкой.
 - **Питание как в KDE** (hypridle + [giga-niri/idle.sh](giga-niri/idle.sh)): на зарядке экран не гаснет и ноутбук не засыпает, в том числе при закрытой крышке ([giga-niri/lid-inhibit.sh](giga-niri/lid-inhibit.sh)); от батареи экран приглушается через 10 минут и гаснет через 30.
 
@@ -46,7 +47,7 @@
 ```sh
 sudo pacman -S --needed niri xwayland-satellite waybar fuzzel mako awww \
     alacritty inter-font ttf-jetbrains-mono-nerd brightnessctl playerctl \
-    hyprlock hypridle qt5-wayland
+    hyprlock hypridle qt5-wayland quickshell
 ```
 
 Конфиги ставятся симлинками в `~/.config`. Установщик пишет только в папки из белого списка (`niri`, `waybar`, `fuzzel`, `mako`, `giga-niri`, `xdg-desktop-portal/niri-portals.conf`), существующие переносит в `~/.config/niri-themes-backup/`:

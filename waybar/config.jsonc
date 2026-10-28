@@ -7,7 +7,7 @@
     "spacing": 0,
 
     "modules-left": ["custom/logo", "custom/sep", "niri/workspaces", "custom/sep", "niri/window"],
-    "modules-right": ["tray", "niri/language", "network", "pulseaudio", "battery", "clock", "custom/power"],
+    "modules-right": ["tray", "niri/language", "network", "bluetooth", "pulseaudio", "battery", "clock", "custom/power"],
 
     "custom/power": {
         "format": "󰐥",
@@ -58,7 +58,18 @@
         "format-ethernet": "󰈀 {ifname}",
         "format-disconnected": "󰤭 нет сети",
         "tooltip-format-wifi": "{essid} · {signalStrength}%\n{ipaddr}",
-        "on-click": "alacritty --config-file ~/.config/giga-niri/alacritty.toml -e nmtui"
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-connected": "󰂱 {device_alias}",
+        "tooltip-format": "{controller_alias}: {status}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle bluetooth"
     },
 
     "pulseaudio": {
@@ -66,7 +77,8 @@
         "format-muted": "󰝟 выкл",
         "format-icons": ["󰕿", "󰖀", "󰕾"],
         "scroll-step": 5,
-        "on-click": "pavucontrol",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle audio",
+        "on-click-middle": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
 
@@ -82,17 +94,8 @@
 
     "clock": {
         "format": "{:%H:%M}",
-        "format-alt": "{:%a %d %b  %H:%M}",
         "locale": "ru_RU.UTF-8",
-        "tooltip-format": "<tt>{calendar}</tt>",
-        "calendar": {
-            "mode": "month",
-            "weeks-pos": "",
-            "format": {
-                "months": "<span color='#bb9af7'><b>{}</b></span>",
-                "weekdays": "<span color='#7aa2f7'>{}</span>",
-                "today": "<span color='#1a1b26' background='#7aa2f7'><b>{}</b></span>"
-            }
-        }
+        "tooltip-format": "{:%A, %d %B}",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle calendar"
     }
 }
