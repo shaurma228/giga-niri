@@ -26,7 +26,8 @@ ColumnLayout {
     property real brightness: 0
     property bool hasBacklight: false
 
-    spacing: 10
+    // Единый шаг 12: край карточки (Theme.pad), промежутки между плитками, поля плиток
+    spacing: 12
 
     PwObjectTracker { objects: [root.sink].filter(n => n) }
 
@@ -127,25 +128,27 @@ ColumnLayout {
         color: on ? "#e6ffffff" : (sqMouse.containsMouse ? "#2bffffff" : Theme.tile)
         Behavior on color { ColorAnimation { duration: 160 } }
 
-        ColumnLayout {
+        // Значок и подпись в одну строку, по центру по вертикали
+        RowLayout {
             anchors.fill: parent
-            anchors.margins: 12
-            spacing: 4
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
+            spacing: 8
             Rectangle {
-                implicitWidth: 30
-                implicitHeight: 30
-                radius: 15
+                implicitWidth: 26
+                implicitHeight: 26
+                radius: 13
                 color: sq.on ? Theme.blue : "#33ffffff"
-                Icon { anchors.centerIn: parent; code: sq.iconCode; size: 15; color: "#ffffff" }
+                Icon { anchors.centerIn: parent; code: sq.iconCode; size: 14; color: "#ffffff" }
             }
-            Item { Layout.fillHeight: true }
             Label {
                 text: sq.title
-                size: 12
+                size: 11
                 bold: true
                 color: sq.on ? Theme.dark : Theme.fg
                 wrapMode: Text.WordWrap
-                elide: Text.ElideNone
+                elide: Text.ElideRight
+                maximumLineCount: 2
                 Layout.fillWidth: true
             }
         }
@@ -161,17 +164,18 @@ ColumnLayout {
     // Связь + две квадратные плитки справа
     RowLayout {
         Layout.fillWidth: true
-        Layout.preferredHeight: 140
-        spacing: 10
+        Layout.preferredHeight: 116
+        spacing: 12
 
         Tile {
             Layout.preferredWidth: 196
             Layout.fillHeight: true
 
+            // Строки прижаты к верхнему и нижнему полю с одинаковым отступом 12
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 12
-                spacing: 8
+                spacing: 0
 
                 ConnRow {
                     Layout.fillWidth: true
@@ -182,6 +186,7 @@ ColumnLayout {
                     onToggled: Networking.wifiEnabled = !Networking.wifiEnabled
                     onOpened: root.open("wifi")
                 }
+                Item { Layout.fillHeight: true }
                 ConnRow {
                     Layout.fillWidth: true
                     iconCode: root.adapter && root.adapter.enabled ? 0xF00AF : 0xF00B2
@@ -197,7 +202,7 @@ ColumnLayout {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: 10
+            spacing: 12
 
             SquareTile {
                 iconCode: 0xF0594 // moon
@@ -207,7 +212,7 @@ ColumnLayout {
             }
             SquareTile {
                 iconCode: 0xF033E // lock
-                title: "Заблокировать"
+                title: "Блокировка"
                 onClicked: {
                     root.requestClose()
                     Quickshell.execDetached(["loginctl", "lock-session"])

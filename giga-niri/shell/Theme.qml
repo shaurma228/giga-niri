@@ -34,7 +34,7 @@ Singleton {
     // Те же значения в niri/cfg/rules.kdl, fuzzel/fuzzel.ini, mako/config.
     readonly property int radius: 22
     readonly property int innerRadius: 14
-    readonly property int pad: 14
+    readonly property int pad: 12
 
     // Значки Nerd Font (Material Design) по коду: так их не испортит запись файла
     function icon(code) { return String.fromCodePoint(code) }
