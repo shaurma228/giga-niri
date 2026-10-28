@@ -107,7 +107,15 @@ tooltip label {
 }
 
 #clock {
-    padding-right: 16px;
     color: #c0caf5;
     font-weight: bold;
+}
+
+#custom-power {
+    padding: 0 16px 0 8px;
+    color: #565f89;
+}
+
+#custom-power:hover {
+    color: #f7768e;
 }

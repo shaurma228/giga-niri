@@ -27,6 +27,26 @@ layer-rule {
     }
 }
 
+// Лаунчер: настоящий блюр (размывает и окна под собой, а не только обои).
+// Он открыт секунды, поэтому дорогой блюр здесь допустим.
+layer-rule {
+    match namespace="^launcher$"
+    geometry-corner-radius 24
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Уведомления: xray-блюр, как у бара
+layer-rule {
+    match namespace="^notifications$"
+    geometry-corner-radius 18
+    background-effect {
+        blur true
+    }
+}
+
 // Обои видны и в Overview (за уменьшенными рабочими столами)
 layer-rule {
     match namespace="^awww-daemon$"
