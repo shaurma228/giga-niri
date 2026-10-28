@@ -1,5 +1,5 @@
 // Строка меню giga-niri в стиле macOS 27: слева значок системы, имя активной
-// программы и рабочие столы (тайлинг), справа значки состояния, Spotlight,
+// программы и рабочие столы (тайлинг), справа значки состояния, поиск,
 // Пункт управления и часы. Сгенерирована вручную, значки — Material Design Nerd Font.
 {
     "layer": "top",
@@ -89,8 +89,8 @@
     },
     "custom/spotlight": {
         "format": "󰍉",
-        "tooltip-format": "Spotlight (Mod+D)",
-        "on-click": "pkill -x fuzzel || fuzzel"
+        "tooltip-format": "Поиск по системе (Alt+Space)",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call search toggle"
     },
     "custom/control": {
         "format": "󰔡",

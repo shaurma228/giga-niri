@@ -29,7 +29,7 @@ Singleton {
     readonly property string font: "Inter"
     readonly property string iconFont: "JetBrainsMono Nerd Font"
 
-    // Единые скругления, как в macOS 27: 22 — у всех поверхностей (окна, Spotlight,
+    // Единые скругления, как в macOS 27: 22 — у всех поверхностей (окна, меню fuzzel,
     // поиск, Пункт управления, уведомления), 14 — у всего внутри них.
     // Те же значения в niri/cfg/rules.kdl, fuzzel/fuzzel.ini, mako/config.
     readonly property int radius: 22

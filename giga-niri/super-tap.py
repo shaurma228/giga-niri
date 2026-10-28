@@ -1,11 +1,12 @@
 #!/usr/bin/env -S python3 -I
-"""Одиночное нажатие Super открывает и закрывает лаунчер (fuzzel), как в KDE.
+"""Одиночное нажатие Super открывает и закрывает поиск по системе, как в KDE.
 
 niri 26.04 вызывает бинды в момент нажатия, поэтому бинд на голый Super_L
 срабатывал бы и при Super+D, Super+Q и т.д. Этот скрипт сам читает клавиатуру
 и мышь (/dev/input, нужна группа input) и считает «тапом» нажатие Super,
 во время которого не было других клавиш и кнопок мыши, отпущенное быстрее
-TAP_MS. Тап открывает fuzzel, а если любое меню fuzzel уже открыто — закрывает.
+TAP_MS. Тап открывает поиск по системе (Alt+Space), повторный — закрывает;
+открытое меню fuzzel (питание, подсказка) тап просто закрывает.
 
 Запускается только из автозапуска niri, поэтому на KDE не влияет.
 Второй экземпляр сразу выходит.
@@ -53,7 +54,8 @@ class Tap:
 def toggle_launcher():
     if subprocess.run(["pkill", "-x", "fuzzel"]).returncode == 0:
         return
-    subprocess.run(["niri", "msg", "action", "spawn", "--", "fuzzel"], check=False)
+    shell = os.path.expanduser("~/.config/giga-niri/shell")
+    subprocess.run(["qs", "-p", shell, "ipc", "call", "search", "toggle"], check=False)
 
 
 def open_devices(opened):

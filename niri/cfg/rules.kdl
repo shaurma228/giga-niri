@@ -37,7 +37,7 @@ layer-rule {
     }
 }
 
-// Spotlight (fuzzel): настоящий блюр — размывает и окна под собой. Открыт секунды.
+// Меню на fuzzel (питание, подсказка): настоящий блюр — размывает и окна под собой.
 layer-rule {
     match namespace="^launcher$"
     geometry-corner-radius 22
