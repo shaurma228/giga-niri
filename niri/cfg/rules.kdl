@@ -19,6 +19,14 @@ window-rule {
     }
 }
 
+// Бар: стекло (xray-блюр обоев под полупрозрачной полосой)
+layer-rule {
+    match namespace="^waybar$"
+    background-effect {
+        blur true
+    }
+}
+
 // Обои видны и в Overview (за уменьшенными рабочими столами)
 layer-rule {
     match namespace="^awww-daemon$"

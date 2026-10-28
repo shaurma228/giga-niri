@@ -1,0 +1,113 @@
+/* Tokyo Glass: полупрозрачная полоса, блюр под ней рисует niri */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 12px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: rgba(22, 22, 30, 0.6);
+    border-bottom: 1px solid rgba(122, 162, 247, 0.12);
+    color: #a9b1d6;
+}
+
+tooltip {
+    background: rgba(26, 27, 38, 0.95);
+    border: 1px solid rgba(122, 162, 247, 0.35);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: #c0caf5;
+}
+
+#custom-logo {
+    padding: 0 6px 0 16px;
+    color: #7aa2f7;
+    font-weight: bold;
+}
+
+#custom-sep {
+    padding: 0 6px;
+    color: #565f89;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    color: #565f89;
+    background: transparent;
+    box-shadow: none;
+}
+
+#workspaces button.active {
+    color: #c0caf5;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    color: #f7768e;
+}
+
+#workspaces button:hover {
+    color: #bb9af7;
+    background: rgba(122, 162, 247, 0.1);
+}
+
+#window {
+    color: #a9b1d6;
+}
+
+#tray,
+#language,
+#network,
+#pulseaudio,
+#battery,
+#clock {
+    padding: 0 8px;
+}
+
+#tray menu {
+    background: rgba(26, 27, 38, 0.95);
+    color: #c0caf5;
+}
+
+#language {
+    color: #bb9af7;
+}
+
+#network {
+    color: #9ece6a;
+}
+
+#network.disconnected {
+    color: #565f89;
+}
+
+#pulseaudio {
+    color: #ff9e64;
+}
+
+#pulseaudio.muted {
+    color: #565f89;
+}
+
+#battery {
+    color: #7dcfff;
+}
+
+#battery.warning:not(.charging) {
+    color: #e0af68;
+}
+
+#battery.critical:not(.charging) {
+    color: #f7768e;
+}
+
+#clock {
+    padding-right: 16px;
+    color: #c0caf5;
+    font-weight: bold;
+}

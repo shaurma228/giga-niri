@@ -3,5 +3,8 @@
 // Окно ввода пароля для pkexec и программ, которым нужны права root
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 
+// Бар (~/.config/waybar). Если не запустится, все бинды работают и без него.
+spawn-at-startup "waybar"
+
 // Обои (scripts/make-wallpaper.py)
 spawn-sh-at-startup "awww-daemon & sleep 0.5; awww img ~/.config/giga-niri/wallpaper.png --transition-type none"

@@ -105,9 +105,12 @@ giga-niri/
 - [ ] Опционально: видео-обои через mpvpaper (оценить нагрузку от блюра, который тогда пересчитывается каждый кадр)
 
 ### 4. Бар (waybar)
-- [ ] Тонкая полоса 30px сверху: `niri` · рабочие столы · заголовок окна | wifi · звук · часы
-- [ ] Модули `niri/workspaces`, `niri/window`, `network`, `pulseaudio`, `battery`, `clock`
-- [ ] Полупрозрачный фон `rgba(22,22,30,0.6)` + блюр niri, нижняя граница `rgba(122,162,247,0.12)`
+- [x] Тонкая полоса 30px сверху: `niri` (клик — Overview) │ рабочие столы │ заголовок окна … трей · раскладка · wifi · звук · батарея · часы
+- [x] Модули `niri/workspaces`, `niri/window`, `niri/language` (EN/RU), `tray` (нужен для Throne), `network` (только `wlan0`, без throne-tun), `pulseaudio` (клик — pavucontrol), `battery` (BAT0), `clock` (клик — дата, подсказка — календарь)
+- [x] Фон `rgba(22,22,30,0.6)` + xray-блюр niri (`layer-rule` для `waybar`), нижняя граница `rgba(122,162,247,0.12)`
+- [x] Автозапуск в niri, установка `scripts/install.sh waybar`
+- [x] Нагрузка: бар добавляет ~0.4 п.п. в простое
+- Грабли: в `niri/language` общий `format` вместе с `format-en`/`format-ru` и `tooltip-format` даёт `argument not found` — общий `format` не задавать
 
 ### 5. Лаунчер и уведомления
 - [ ] fuzzel: по центру, ширина ~560px, радиус 24, фон `#1a1b26b8`, выделение `#7aa2f7`, `Mod+D`

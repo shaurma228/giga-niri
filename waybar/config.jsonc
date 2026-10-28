@@ -1,0 +1,92 @@
+// Waybar для giga-niri: тонкая стеклянная полоса сверху (Tokyo Glass).
+// Блюр под баром даёт niri (layer-rule в niri/cfg/rules.kdl).
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 0,
+
+    "modules-left": ["custom/logo", "custom/sep", "niri/workspaces", "custom/sep", "niri/window"],
+    "modules-right": ["tray", "niri/language", "network", "pulseaudio", "battery", "clock"],
+
+    "custom/logo": {
+        "format": "niri",
+        "tooltip-format": "Overview (Mod+O)",
+        "on-click": "niri msg action toggle-overview"
+    },
+
+    "custom/sep": {
+        "format": "│",
+        "tooltip": false
+    },
+
+    "niri/workspaces": {
+        "format": "{index}"
+    },
+
+    "niri/window": {
+        "format": "{title}",
+        "max-length": 70,
+        "separate-outputs": true,
+        "rewrite": {
+            "(.*) — Google Chrome": "$1",
+            "(.*) - Google Chrome": "$1"
+        }
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10
+    },
+
+    // Без общего "format": вместе с format-<язык> он даёт "argument not found"
+    "niri/language": {
+        "format-en": "EN",
+        "format-ru": "RU",
+        "tooltip-format": "{long}"
+    },
+
+    "network": {
+        "interface": "wlan0",
+        "format-wifi": "󰤨 {essid}",
+        "format-ethernet": "󰈀 {ifname}",
+        "format-disconnected": "󰤭 нет сети",
+        "tooltip-format-wifi": "{essid} · {signalStrength}%\n{ipaddr}",
+        "on-click": "alacritty --config-file ~/.config/giga-niri/alacritty.toml -e nmtui"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 выкл",
+        "format-icons": ["󰕿", "󰖀", "󰕾"],
+        "scroll-step": 5,
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+
+    "battery": {
+        "bat": "BAT0",
+        "states": { "warning": 25, "critical": 12 },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}"
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%a %d %b  %H:%M}",
+        "locale": "ru_RU.UTF-8",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "",
+            "format": {
+                "months": "<span color='#bb9af7'><b>{}</b></span>",
+                "weekdays": "<span color='#7aa2f7'>{}</span>",
+                "today": "<span color='#1a1b26' background='#7aa2f7'><b>{}</b></span>"
+            }
+        }
+    }
+}
