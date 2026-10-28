@@ -6,8 +6,12 @@ spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 // Бар (~/.config/waybar). Если не запустится, все бинды работают и без него.
 spawn-at-startup "waybar"
 
-// Простой: приглушение, блокировка, выключение мониторов (giga-niri/hypridle.conf)
+// Простой как в KDE: на зарядке ничего, от батареи приглушение и гашение экрана
+// (giga-niri/hypridle.conf, giga-niri/idle.sh)
 spawn-sh-at-startup "command -v hypridle >/dev/null && exec hypridle -c ~/.config/giga-niri/hypridle.conf"
+
+// Крышка как в KDE: на зарядке не уходить в сон (giga-niri/lid-inhibit.sh)
+spawn-at-startup "/home/goydaslav/.config/giga-niri/lid-inhibit.sh"
 
 // Обои (scripts/make-wallpaper.py)
 spawn-sh-at-startup "awww-daemon & sleep 0.5; awww img ~/.config/giga-niri/wallpaper.png --transition-type none"

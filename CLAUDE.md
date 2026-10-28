@@ -54,4 +54,5 @@
 - Chrome: в нём выбрана тема Qt (`system_theme: 2`), на Wayland работает благодаря `qt5-wayland` (не удалять). Тему Chrome не менять (она общая с KDE).
 - Секреты: и в KDE, и в niri хранилище — KWallet (`ksecretd`). `gnome-keyring` удалён и не должен возвращаться: иначе в niri у Chrome и `gh` будут другие ключи.
 - Значки Nerd Font: брать из диапазона Material Design (U+F0000+, например 󰐥), а не Font Awesome (U+F000–F2FF): последние теряются при записи файлов. Надёжно вставлять через `\U000Fxxxx` в Python.
+- Питание: **на зарядке ноутбук не должен засыпать, выключаться и гасить экран** (требование пользователя). Простой — `giga-niri/hypridle.conf` + `giga-niri/idle.sh` (копия powerdevilrc), крышка — `giga-niri/lid-inhibit.sh`. Системный logind.conf не менять, профили питания не трогать (их ведёт auto-cpufreq).
 - `sudo` агенту недоступен: команды установки отдавать пользователю в виде `! sudo pacman -S ...`.
