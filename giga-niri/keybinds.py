@@ -155,7 +155,10 @@ def main():
         ["fuzzel", "--dmenu", "--index",
          "--font", "JetBrainsMono Nerd Font:size=11",
          "--prompt", "\U000F030C  ", "--placeholder", "Поиск по клавишам и действиям",
-         "--width", "78", "--lines", "16", "--line-height", "28"],
+         # По центру экрана: у Spotlight в fuzzel.ini anchor=top и отступ 210 px,
+         # с ним длинный список уезжал за нижний край
+         "--anchor", "center",
+         "--width", "78", "--lines", "14", "--line-height", "24"],
         input="\n".join(lines), capture_output=True, text=True)
     if res.returncode != 0 or not res.stdout.strip():
         return
