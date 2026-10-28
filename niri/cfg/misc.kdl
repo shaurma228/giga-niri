@@ -32,6 +32,8 @@ blur {
 
 screenshot-path "~/Pictures/Screenshots/niri-%Y-%m-%d_%H-%M-%S.png"
 
-// Подсказка по клавишам при старте. Отключить: skip-at-startup
+// Встроенная подсказка niri не показывается при старте: её заменяет
+// giga-niri/keybinds.py (Mod+Shift+/). Сама она по Mod+Ctrl+Shift+/.
 hotkey-overlay {
+    skip-at-startup
 }

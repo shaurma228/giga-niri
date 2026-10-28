@@ -15,3 +15,7 @@ spawn-at-startup "/home/goydaslav/.config/giga-niri/lid-inhibit.sh"
 
 // Обои (scripts/make-wallpaper.py)
 spawn-sh-at-startup "awww-daemon & sleep 0.5; awww img ~/.config/giga-niri/wallpaper.png --transition-type none"
+
+// Одиночный Super открывает и закрывает лаунчер (giga-niri/super-tap.py).
+// Нужна группа input; без неё скрипт сразу выходит, бинды работают как обычно.
+spawn-at-startup "/home/goydaslav/.config/giga-niri/super-tap.py"

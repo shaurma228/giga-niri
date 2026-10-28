@@ -1,13 +1,17 @@
 // Горячие клавиши. Mod = Super (Win). Полный список: Mod+Shift+/
+// Строки «// == Раздел» — заголовки разделов в подсказке (giga-niri/keybinds.py).
+// hotkey-overlay-title — подпись в подсказке; без неё берётся перевод действия.
 //
 // Аварийные, работают всегда и не зависят от бара и лаунчера:
 //   Ctrl+Alt+Delete   выйти из niri
 //   Mod+Shift+Return  терминал с вашим обычным конфигом alacritty
 
 binds {
-    Mod+Shift+Slash { show-hotkey-overlay; }
+    // == Справка
+    Mod+Shift+Slash hotkey-overlay-title="Подсказка по клавишам" { spawn "/home/goydaslav/.config/giga-niri/keybinds.py"; }
+    Mod+Ctrl+Shift+Slash hotkey-overlay-title="Встроенная подсказка niri" { show-hotkey-overlay; }
 
-    // Программы
+    // == Программы
     Mod+Return hotkey-overlay-title="Терминал" { spawn-sh "alacritty --config-file ~/.config/giga-niri/alacritty.toml"; }
     Mod+T hotkey-overlay-title=null { spawn-sh "alacritty --config-file ~/.config/giga-niri/alacritty.toml"; }
     Mod+Shift+Return hotkey-overlay-title="Аварийный терминал" { spawn "alacritty"; }
@@ -16,7 +20,7 @@ binds {
     // В Chrome выбрана тема Qt: на Wayland ему нужен пакет qt5-wayland
     Mod+B hotkey-overlay-title="Браузер" { spawn "google-chrome-stable"; }
 
-    // Звук, медиа, яркость
+    // == Медиа
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
     XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
@@ -28,7 +32,7 @@ binds {
     XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
 
-    // Окна
+    // == Окна
     Mod+O repeat=false { toggle-overview; }
     Mod+Q repeat=false { close-window; }
 
@@ -55,7 +59,7 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End  { move-column-to-last; }
 
-    // Мониторы: ноутбук слева, MSI справа
+    // == Мониторы: ноутбук слева, MSI справа
     Mod+Shift+Left  { focus-monitor-left; }
     Mod+Shift+Right { focus-monitor-right; }
     Mod+Shift+H     { focus-monitor-left; }
@@ -67,7 +71,7 @@ binds {
     Mod+Shift+Alt+Left   { move-workspace-to-monitor-left; }
     Mod+Shift+Alt+Right  { move-workspace-to-monitor-right; }
 
-    // Рабочие столы
+    // == Рабочие столы
     Mod+Page_Down      { focus-workspace-down; }
     Mod+Page_Up        { focus-workspace-up; }
     Mod+U              { focus-workspace-down; }
@@ -109,7 +113,7 @@ binds {
     Mod+Ctrl+8 { move-column-to-workspace 8; }
     Mod+Ctrl+9 { move-column-to-workspace 9; }
 
-    // Колонки и размеры
+    // == Колонки и размеры
     Mod+BracketLeft  { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
     Mod+Comma  { consume-window-into-column; }
@@ -134,12 +138,12 @@ binds {
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+W { toggle-column-tabbed-display; }
 
-    // Скриншоты
+    // == Скриншоты
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    // Сессия
+    // == Сессия
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Super+Alt+L allow-when-locked=false hotkey-overlay-title="Заблокировать" { spawn-sh "pidof hyprlock || hyprlock -c ~/.config/giga-niri/hyprlock.conf"; }
     Mod+Shift+Q hotkey-overlay-title="Меню питания" { spawn "/home/goydaslav/.config/giga-niri/power-menu.sh"; }
