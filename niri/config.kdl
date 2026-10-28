@@ -6,6 +6,7 @@
 include "./cfg/input.kdl"
 include "./cfg/outputs.kdl"
 include "./cfg/layout.kdl"
+include "./cfg/animations.kdl"
 include "./cfg/misc.kdl"
 include "./cfg/autostart.kdl"
 include "./cfg/rules.kdl"

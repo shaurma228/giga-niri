@@ -6,7 +6,8 @@
 #   scripts/gpu-bench.sh idle 20    только простой, 20 с
 #
 # Сценарий «анимации» открывает 3 терминала, гоняет фокус между колонками
-# и Overview, затем закрывает открытые им окна.
+# и Overview. Сценарий «окна» по кругу открывает и закрывает терминал
+# (шейдеры window-open/window-close). Открытые скриптом окна закрываются.
 set -euo pipefail
 
 GT=/sys/class/drm/card1/gt/gt0
@@ -44,6 +45,16 @@ animate() {
     done
 }
 
+open_close() {
+    while true; do
+        niri msg action spawn -- "${TERM_CMD[@]}" -T giga-bench-oc
+        sleep 0.9
+        niri msg -j windows | python3 -I -c 'import json,sys; [print(w["id"]) for w in json.load(sys.stdin) if w["title"]=="giga-bench-oc"]' \
+            | while read -r id; do niri msg action close-window --id "$id"; done
+        sleep 0.9
+    done
+}
+
 mode=${1:-all}
 secs=${2:-10}
 outputs=$(niri msg -j outputs | python3 -I -c '
@@ -64,6 +75,8 @@ before=$(niri msg -j windows | python3 -I -c 'import json,sys; print(" ".join(st
 for _ in 1 2 3; do niri msg action spawn -- "${TERM_CMD[@]}"; sleep 0.7; done
 sleep 1
 printf 'анимации    '; measure "$secs" animate
+printf 'окна        '; measure "$secs" open_close
+sleep 1
 for id in $(niri msg -j windows | python3 -I -c 'import json,sys; print(" ".join(str(w["id"]) for w in json.load(sys.stdin)))'); do
     [[ " $before " == *" $id "* ]] || niri msg action close-window --id "$id"
 done

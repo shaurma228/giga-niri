@@ -1,0 +1,35 @@
+// Анимации giga-niri. Шаблон: маркер @shader + (имя) заменяется на shaders/<имя>.frag.
+// Сборка: python3 -I scripts/build-animations.py
+
+animations {
+    // Переключение рабочих столов и прокрутка колонок: пружина с лёгким «пружинением»
+    workspace-switch {
+        spring damping-ratio=0.82 stiffness=700 epsilon=0.0001
+    }
+    horizontal-view-movement {
+        spring damping-ratio=0.85 stiffness=750 epsilon=0.0001
+    }
+    window-movement {
+        spring damping-ratio=0.85 stiffness=750 epsilon=0.0001
+    }
+    window-resize {
+        spring damping-ratio=0.9 stiffness=800 epsilon=0.0001
+    }
+    overview-open-close {
+        spring damping-ratio=0.88 stiffness=650 epsilon=0.0001
+    }
+
+    // Открытие: стекло проявляется с бликом
+    window-open {
+        duration-ms 340
+        curve "ease-out-cubic"
+        @shader(open)
+    }
+
+    // Закрытие: окно рассыпается на светящиеся стекляшки
+    window-close {
+        duration-ms 420
+        curve "ease-out-quad"
+        @shader(close)
+    }
+}
