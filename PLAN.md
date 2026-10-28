@@ -71,15 +71,24 @@ giga-niri/
 - [ ] Проверить диалог выбора файлов в niri (портал FileChooser: gnome без nautilus может не работать)
 
 ### 2. Стекло и рамки (сердце Tokyo Glass)
-- [ ] `layout`: gaps 16, `focus-ring` градиент `#7aa2f7 → #bb9af7` `in="oklch longer hue"`, неактивный тусклый
-- [ ] `window-rule`: `geometry-corner-radius 18`, `clip-to-geometry true`, тени (softness 40, spread 4)
-- [ ] Глобальный `blur {}` и `background-effect { blur true }` для терминала, лаунчера, бара, уведомлений
-- [ ] Прозрачность: alacritty `opacity 0.72`, остальные окна непрозрачные (блюр на всех окнах тяжёлый)
-- [ ] Блюр по умолчанию в режиме xray (размывает только обои: считается один раз, почти бесплатно). Обычный блюр (размывает окна под окном) только там, где он заметен: лаунчер, уведомления
-- [ ] Проверка нагрузки на Intel UHD **на внешнем мониторе 2560x1440 @ 100 Гц** (худший случай) и на eDP 1080p @ 144 Гц: `intel_gpu_top` (пакет `intel-gpu-tools`) + визуально при прокрутке колонок, Overview и открытии окон. Турбо CPU выключен и остаётся выключенным
-- [ ] Ориентир: занятость Render/3D < ~60% при активной работе и без пропущенных кадров. Иначе: меньше проходов блюра (`passes 2`), xray везде, проще шейдеры
+- [x] `layout`: gaps 16, `focus-ring` градиент `#7aa2f7 → #bb9af7` (`in="oklch shorter hue"`, `relative-to="workspace-view"`: перелив при прокрутке), неактивный `#3b4261`
+- [x] `window-rule`: `geometry-corner-radius 18`, `clip-to-geometry true`, `draw-border-with-background false` (иначе заливка рамки просвечивает сквозь стекло), тени (softness 40, spread 4, y 8)
+- [x] Глобальный `blur {}` (passes 3) и `background-effect { blur true }` для alacritty. Лаунчер, бар, уведомления — на этапах 4–5
+- [x] alacritty в niri: `opacity 0.72`, Tokyo Night, JetBrainsMono Nerd Font, padding 16/14
+- [x] Блюр в режиме xray (по умолчанию). `layout { background-color "transparent" }`, иначе обои не видны
+- [x] Скрипт замера `scripts/gpu-bench.sh` (без root: по счётчику RC6). `intel_gpu_top` требует CAP_PERFMON, не используется
+- [x] Замер на eDP 1080p @ 144 Гц (сценарий: 3 терминала, прокрутка колонок + Overview):
 
-### 2.5. Эксперимент с NVIDIA (только если Intel не тянет)
+  | Конфигурация | Простой | Анимации | Ср. частота iGPU |
+  |---|---|---|---|
+  | Без эффектов | 2.4% | 30.5% | 96 МГц |
+  | Стекло (xray-блюр, тени, градиент, обои) | 0.2% | 37.4% | 114 МГц |
+  | Худший случай: обычный блюр на всех терминалах | 0.4% | 54.5% | 174 МГц |
+
+  Частота далеко от максимума 1200 МГц, запас большой. NVIDIA (этап 2.5) не нужна.
+- [ ] Повторить замер на MSI 2560x1440 @ 100 Гц, когда монитор будет подключён (ожидание: ~×1.25 к нагрузке)
+
+### 2.5. Эксперимент с NVIDIA (не требуется: Intel тянет, см. замеры этапа 2)
 Все выходы (eDP-1, HDMI, DP) подключены к Intel `card1`, у RTX 3050 (`card0`, `renderD129`) своих выходов нет. Рендер на NVIDIA = копирование каждого кадра через PCIe на Intel и постоянно активная dGPU (сейчас простаивает в P8 ~4 Вт).
 - [ ] Выяснить, почему niri не смог инициализировать EGL на NVIDIA (`journalctl -b -1 | grep -i egl`). Пакеты `egl-gbm`, `egl-wayland`, профиль `limit-vram-usage` уже есть
 - [ ] Отдельный `cfg/gpu-nvidia.kdl` с `debug { render-drm-device "/dev/dri/renderD129" }`, подключается одной строкой `include`
@@ -87,9 +96,10 @@ giga-niri/
 - [ ] Решение: Intel по умолчанию, NVIDIA как опциональный профиль «от сети»
 
 ### 3. Обои
-- [ ] Подобрать обои «ночной город + боке» в 1920×1080 (с лицензией) или сгенерировать свои
-- [ ] `awww-daemon` в `spawn-at-startup`, переход `--transition-type grow`
-- [ ] Обои в Overview: `layer-rule` для `place-within-backdrop`
+- [x] Свои обои «ночной город + боке»: `scripts/make-wallpaper.py` → `wallpapers/tokyo-glass.png` (2560x1440, без проблем с лицензией)
+- [x] `awww-daemon` в автозапуске, картинка через симлинк `~/.config/giga-niri/wallpaper.png`
+- [ ] Скрипт смены обоев с переходом `--transition-type grow`
+- [x] Обои в Overview: `layer-rule` для `awww-daemon` с `place-within-backdrop`
 - [ ] Опционально: видео-обои через mpvpaper (оценить нагрузку от блюра, который тогда пересчитывается каждый кадр)
 
 ### 4. Бар (waybar)

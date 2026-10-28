@@ -1,8 +1,11 @@
-// Раскладка окон. Стекло, градиенты и тени добавятся на этапе 2.
+// Раскладка окон и рамки в стиле Tokyo Glass.
 
 layout {
     gaps 16
     center-focused-column "never"
+
+    // Прозрачный фон рабочего стола, иначе он закрывает обои (awww)
+    background-color "transparent"
 
     preset-column-widths {
         proportion 0.33333
@@ -11,13 +14,25 @@ layout {
     }
     default-column-width { proportion 0.5; }
 
+    // Градиентная рамка активного окна: blue → magenta Tokyo Night.
+    // relative-to="workspace-view": градиент общий на весь экран и
+    // «переливается» при прокрутке колонок.
     focus-ring {
         width 2
-        active-color "#7aa2f7"
+        active-gradient from="#7aa2f7" to="#bb9af7" angle=135 relative-to="workspace-view" in="oklch shorter hue"
         inactive-color "#3b4261"
     }
 
     border {
         off
+    }
+
+    // Мягкая тень, чтобы стекло «висело» над обоями
+    shadow {
+        on
+        softness 40
+        spread 4
+        offset x=0 y=8
+        color "#0000008c"
     }
 }

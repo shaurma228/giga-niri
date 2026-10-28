@@ -1,4 +1,29 @@
-// Правила окон. Скругления, блюр и прозрачность добавятся на этапе 2.
+// Правила окон.
+
+// Скругления у всех окон. clip-to-geometry обрезает содержимое по скруглению.
+// draw-border-with-background false: рамка фокуса только по контуру,
+// иначе её заливка просвечивает сквозь полупрозрачные окна.
+window-rule {
+    geometry-corner-radius 18
+    clip-to-geometry true
+    draw-border-with-background false
+}
+
+// Матовое стекло: блюр под полупрозрачными окнами.
+// По умолчанию xray: размываются только обои, а не окна под окном.
+// Это считается один раз и почти не нагружает видеокарту.
+window-rule {
+    match app-id="^Alacritty$"
+    background-effect {
+        blur true
+    }
+}
+
+// Обои видны и в Overview (за уменьшенными рабочими столами)
+layer-rule {
+    match namespace="^awww-daemon$"
+    place-within-backdrop true
+}
 
 // Картинка в картинке (Firefox, Chrome) — плавающим окном
 window-rule {

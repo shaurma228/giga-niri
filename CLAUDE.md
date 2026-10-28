@@ -32,6 +32,8 @@
 ## Где что лежит
 
 - `~/.config/niri` и `~/.config/giga-niri` — симлинки на папки `niri/` и `giga-niri/` этого репозитория (ставит `scripts/install.sh`). Правки в репозитории сразу действуют в niri.
+- `scripts/gpu-bench.sh` — замер нагрузки iGPU в сессии niri (простой + анимации). Результаты записывать в PLAN.md.
+- `scripts/make-wallpaper.py` — генератор обоев `wallpapers/tokyo-glass.png`; активные обои: симлинк `giga-niri/wallpaper.png`.
 - `scripts/check-kde.sh` — сравнение KDE/GTK/Qt/dconf со снимком (`--snapshot` снять новый). Запускать после каждой установки; `install.sh` вызывает его сам.
 - `~/.config/niri-themes-backup/` — бэкапы прежних оформлений (там лежит CachyOS + Noctalia, снятое 2026-10-28).
 - `~/.config/niri.bak-2026-10-28/` — самый первый дефолтный конфиг niri.

@@ -2,3 +2,6 @@
 
 // Окно ввода пароля для pkexec и программ, которым нужны права root
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+
+// Обои (scripts/make-wallpaper.py)
+spawn-sh-at-startup "awww-daemon & sleep 0.5; awww img ~/.config/giga-niri/wallpaper.png --transition-type none"

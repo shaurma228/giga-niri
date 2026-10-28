@@ -15,6 +15,14 @@ cursor {
 
 prefer-no-csd
 
+// Параметры блюра для всех окон и панелей с background-effect { blur true; }
+blur {
+    passes 3
+    offset 3.0
+    noise 0.02
+    saturation 1.4
+}
+
 screenshot-path "~/Pictures/Screenshots/niri-%Y-%m-%d_%H-%M-%S.png"
 
 // Подсказка по клавишам при старте. Отключить: skip-at-startup

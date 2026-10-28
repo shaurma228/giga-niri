@@ -1,6 +1,53 @@
 # Alacritty внутри niri. Берёт ваш обычный конфиг и переопределяет поверх него
 # только то, что нужно оформлению. Сам ~/.config/alacritty не меняется.
-# Тема Tokyo Night и прозрачность появятся на этапе 2.
 
 [general]
 import = ["~/.config/alacritty/alacritty.toml"]
+
+[window]
+# Полупрозрачный фон: под ним блюр niri (матовое стекло)
+opacity = 0.72
+padding = { x = 16, y = 14 }
+decorations = "None"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+
+# Tokyo Night (night)
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.primary]
+background = "#1a1b26"
+foreground = "#c0caf5"
+
+[colors.cursor]
+text = "#1a1b26"
+cursor = "#c0caf5"
+
+[colors.selection]
+text = "CellForeground"
+background = "#33467c"
+
+[colors.normal]
+black = "#15161e"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#bb9af7"
+cyan = "#7dcfff"
+white = "#a9b1d6"
+
+[colors.bright]
+black = "#414868"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#bb9af7"
+cyan = "#7dcfff"
+white = "#c0caf5"
