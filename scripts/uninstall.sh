@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 CONFIG="$HOME/.config"
-ALLOWED=(niri waybar fuzzel mako giga-niri)
+ALLOWED=(niri waybar fuzzel mako giga-niri xdg-desktop-portal/niri-portals.conf)
 if [[ $# -gt 0 ]]; then components=("$@"); else components=("${ALLOWED[@]}"); fi
 
 for c in "${components[@]}"; do

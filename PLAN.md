@@ -63,7 +63,12 @@ giga-niri/
 - [x] Аварийные бинды: `Ctrl+Alt+Delete` выход, `Mod+Return` терминал, `Mod+Shift+/` подсказки
 - [x] `environment {}`: `ELECTRON_OZONE_PLATFORM_HINT auto`, `QT_QPA_PLATFORMTHEME kde` (Qt-приложения как в Plasma). Курсор breeze как в KDE, агент polkit от KDE
 - [x] `niri validate`, `check-kde.sh`
-- [ ] Вход в сессию (проверяет пользователь): бинды, раскладка Meta+Space, оба монитора, polkit
+- [x] Вход в сессию: бинды, раскладка Meta+Space, тачпад
+- [ ] Внешний монитор MSI 1440p: проверить `niri msg outputs`, когда будет подключён
+- [x] Портал Secret в niri → KWallet (`xdg-desktop-portal/niri-portals.conf`)
+- [ ] Удалить `gnome-keyring` (пользователь: `sudo pacman -Rns gnome-keyring`), перезайти и проверить, что `org.freedesktop.secrets` держит `ksecretd`, а `gh auth status` видит токен
+- [ ] После этого вернуть бинд Chrome (`Mod+B`). Для Wayland без X11 нужен `qt5-wayland` (решение пользователя: он переведёт Qt5-программы на Wayland и в KDE)
+- [ ] Проверить диалог выбора файлов в niri (портал FileChooser: gnome без nautilus может не работать)
 
 ### 2. Стекло и рамки (сердце Tokyo Glass)
 - [ ] `layout`: gaps 16, `focus-ring` градиент `#7aa2f7 → #bb9af7` `in="oklch longer hue"`, неактивный тусклый

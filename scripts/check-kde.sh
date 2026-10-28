@@ -12,8 +12,9 @@ PROTECTED=(
     kdeglobals kwinrc kdedefaults plasmarc plasmashellrc plasma-localerc
     plasma-org.kde.plasma.desktop-appletsrc gtk-3.0 gtk-4.0 gtkrc gtkrc-2.0
     Trolltech.conf xsettingsd qt5ct qt6ct Kvantum kcminputrc kscreenlockerrc
-    ksmserverrc kglobalshortcutsrc kxkbrc alacritty
+    kglobalshortcutsrc kxkbrc alacritty
 )
+# ksmserverrc не проверяется: KDE пишет туда список окон при каждом выходе.
 
 existing() {
     local p

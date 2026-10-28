@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Ставит конфиги giga-niri симлинками в ~/.config.
-# Пишет только в папки из белого списка, существующие папки переносит в бэкап.
+# Пишет только в пути из белого списка (папки или отдельные файлы),
+# существующие переносит в бэкап.
 #
 #   scripts/install.sh            все компоненты, которые есть в репозитории
 #   scripts/install.sh niri       только перечисленные
@@ -9,7 +10,7 @@ set -euo pipefail
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 CONFIG="$HOME/.config"
 BACKUP="$CONFIG/niri-themes-backup/giga-niri-install-$(date +%F-%H%M%S)"
-ALLOWED=(niri waybar fuzzel mako giga-niri)
+ALLOWED=(niri waybar fuzzel mako giga-niri xdg-desktop-portal/niri-portals.conf)
 
 allowed() {
     local a
@@ -21,12 +22,12 @@ if [[ $# -gt 0 ]]; then
     components=("$@")
 else
     components=()
-    for a in "${ALLOWED[@]}"; do [[ -d "$REPO/$a" ]] && components+=("$a"); done
+    for a in "${ALLOWED[@]}"; do [[ -e "$REPO/$a" ]] && components+=("$a"); done
 fi
 
 for c in "${components[@]}"; do
     allowed "$c" || { echo "Отказ: '$c' не в белом списке (${ALLOWED[*]})" >&2; exit 1; }
-    [[ -d "$REPO/$c" ]] || { echo "Отказ: в репозитории нет папки $c" >&2; exit 1; }
+    [[ -e "$REPO/$c" ]] || { echo "Отказ: в репозитории нет $c" >&2; exit 1; }
 done
 
 echo "== Проверка KDE до установки"
@@ -43,10 +44,11 @@ for c in "${components[@]}"; do
         continue
     fi
     if [[ -e "$dst" || -L "$dst" ]]; then
-        mkdir -p "$BACKUP"
+        mkdir -p "$(dirname "$BACKUP/$c")"
         mv "$dst" "$BACKUP/$c"
         echo "~ $c: старый конфиг перенесён в $BACKUP/$c"
     fi
+    mkdir -p "$(dirname "$dst")"
     ln -s "$src" "$dst"
     echo "+ $c → $dst"
 done
