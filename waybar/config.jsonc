@@ -90,7 +90,7 @@
     "custom/spotlight": {
         "format": "󰍉",
         "tooltip-format": "Spotlight (Mod+D)",
-        "on-click": "fuzzel"
+        "on-click": "pkill -x fuzzel || fuzzel"
     },
     "custom/control": {
         "format": "󰔡",
