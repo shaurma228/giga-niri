@@ -18,8 +18,8 @@ binds {
     // Повторное нажатие закрывает Spotlight (и любое другое меню fuzzel)
     Mod+D repeat=false hotkey-overlay-title="Spotlight: открыть / закрыть" { spawn-sh "pkill -x fuzzel || fuzzel"; }
     Mod+E hotkey-overlay-title="Файлы" { spawn "dolphin"; }
-    // В Chrome выбрана тема Qt: на Wayland ему нужен пакет qt5-wayland
-    Mod+B hotkey-overlay-title="Браузер" { spawn "google-chrome-stable"; }
+    // Firefox — браузер по умолчанию (и в системе: xdg-settings default-web-browser)
+    Mod+B hotkey-overlay-title="Браузер (Firefox)" { spawn "firefox"; }
 
     // == Медиа
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }

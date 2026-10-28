@@ -36,7 +36,7 @@
 | `Mod+Return` | Терминал (alacritty с конфигом giga-niri) |
 | `Super` (одиночное нажатие) | Открыть / закрыть Spotlight (нужна группа `input`, см. ниже) |
 | `Mod+D` | Spotlight: открыть / закрыть |
-| `Mod+E` / `Mod+B` | Файлы / браузер |
+| `Mod+E` / `Mod+B` | Файлы / Firefox |
 | `Mod+O` | Overview |
 | `Mod+Q` | Закрыть окно |
 | `Mod+Shift+Q` | Меню питания |
