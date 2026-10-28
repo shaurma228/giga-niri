@@ -39,7 +39,7 @@
 
 ## Установленное для прежней темы (можно удалить)
 
-`noctalia`, `adw-gtk-theme`, `xdg-desktop-portal-gnome`, `gnome-keyring`, `wl-clipboard`, `xwayland-satellite`. `xwayland-satellite` и порталы нужны niri в любом случае — их оставлять.
+`noctalia`, `adw-gtk-theme`, `xdg-desktop-portal-gnome`, `wl-clipboard`, `xwayland-satellite` (`gnome-keyring` уже удалён). `xwayland-satellite` и порталы нужны niri в любом случае — их оставлять.
 
 ## Работа с конфигом niri
 
@@ -48,5 +48,6 @@
 - Всегда держать рабочий аварийный выход: `Ctrl+Alt+Delete { quit; }` и бинд на терминал, который не зависит от шелла/бара. Если бар или шелл (Noctalia, quickshell и т.п.) не запустится, сессия не должна превращаться в серый экран без выхода.
 - Логи прошлой сессии: `journalctl -b -1 | grep -i niri`.
 - **Проверки делает агент сам**, не перекладывая на пользователя: если сессия niri запущена (`$NIRI_SOCKET` задан), использовать `niri msg` (outputs, windows, focused-window, action ...), журнал, тестовые запуски программ с `timeout`, скриншоты (`niri msg action screenshot-screen` и чтение файла из `~/Pictures/Screenshots`). Пользователя просить только о том, что невозможно проверить самому (например, физически подключить монитор).
-- Chrome: в нём выбрана тема Qt (`system_theme: 2`), без `qt5-wayland` он падает на Wayland. Тему Chrome не менять (она общая с KDE).
+- Chrome: в нём выбрана тема Qt (`system_theme: 2`), на Wayland работает благодаря `qt5-wayland` (не удалять). Тему Chrome не менять (она общая с KDE).
+- Секреты: и в KDE, и в niri хранилище — KWallet (`ksecretd`). `gnome-keyring` удалён и не должен возвращаться: иначе в niri у Chrome и `gh` будут другие ключи.
 - `sudo` агенту недоступен: команды установки отдавать пользователю в виде `! sudo pacman -S ...`.

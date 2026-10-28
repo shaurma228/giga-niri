@@ -66,8 +66,8 @@ giga-niri/
 - [x] Вход в сессию: бинды, раскладка Meta+Space, тачпад
 - [ ] Внешний монитор MSI 1440p: проверить `niri msg outputs`, когда будет подключён
 - [x] Портал Secret в niri → KWallet (`xdg-desktop-portal/niri-portals.conf`)
-- [ ] Удалить `gnome-keyring` (пользователь: `sudo pacman -Rns gnome-keyring`), перезайти и проверить, что `org.freedesktop.secrets` держит `ksecretd`, а `gh auth status` видит токен
-- [ ] После этого вернуть бинд Chrome (`Mod+B`). Для Wayland без X11 нужен `qt5-wayland` (решение пользователя: он переведёт Qt5-программы на Wayland и в KDE)
+- [x] `gnome-keyring` удалён: `org.freedesktop.secrets` и портал Secret в niri держит `ksecretd` (KWallet), `gh` видит токен
+- [x] `qt5-wayland` установлен, Chrome (`Mod+B`) работает нативно на Wayland, ключи через KWallet
 - [ ] Проверить диалог выбора файлов в niri (портал FileChooser: gnome без nautilus может не работать)
 
 ### 2. Стекло и рамки (сердце Tokyo Glass)
