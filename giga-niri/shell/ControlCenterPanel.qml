@@ -221,16 +221,17 @@ ColumnLayout {
         }
     }
 
-    // Дисплей
+    // Дисплей. Высота по содержимому: поля 12 сверху и снизу ровные
     Tile {
         visible: root.hasBacklight
         Layout.fillWidth: true
-        implicitHeight: 72
+        implicitHeight: displayCol.implicitHeight + 24
         ColumnLayout {
+            id: displayCol
             anchors.fill: parent
             anchors.margins: 12
             spacing: 8
-            Label { text: "Дисплей"; size: 13; bold: true }
+            Label { text: "Дисплей"; size: 13; bold: true; Layout.preferredHeight: 18 }
             Slider {
                 Layout.fillWidth: true
                 iconCode: 0xF00DF // brightness
@@ -240,16 +241,18 @@ ColumnLayout {
         }
     }
 
-    // Звук
+    // Звук — та же раскладка, что у «Дисплея»
     Tile {
         Layout.fillWidth: true
-        implicitHeight: 72
+        implicitHeight: soundCol.implicitHeight + 24
         ColumnLayout {
+            id: soundCol
             anchors.fill: parent
             anchors.margins: 12
             spacing: 8
             RowLayout {
                 Layout.fillWidth: true
+                Layout.preferredHeight: 18
                 Label { text: "Звук"; size: 13; bold: true; Layout.fillWidth: true }
                 Icon {
                     code: 0xF0142
