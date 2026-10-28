@@ -8,7 +8,9 @@
 
 - CachyOS (Arch), ядро cachyos, пакеты ставит `pacman` (AUR через `paru`/`yay`, если есть).
 - niri 26.04. Сессия запускается из Plasma Login Manager (`/usr/share/wayland-sessions/niri.desktop`, команда `niri-session`).
-- Ноутбук: Intel UHD (Alder Lake-P) + NVIDIA RTX 3050 Mobile (гибрид), экран eDP-1 1920x1080. Все выходы подключены к Intel (`card1`, `renderD128`), у NVIDIA (`card0`, `renderD129`, драйвер nvidia-open 615) своих выходов нет. niri рендерит на Intel; при попытке инициализировать NVIDIA получил `Failed to initialize EGL`. Рендер на NVIDIA только как опциональный профиль (PLAN.md, этап 2.5). Блюр и шейдеры проверять на производительность.
+- Ноутбук: i5-12450H + Intel UHD (Alder Lake-P GT1, 48 EU, до 1200 МГц) + NVIDIA RTX 3050 Mobile (гибрид).
+- Мониторы: встроенный eDP-1 1920x1080 @ 144 Гц (BOE) и **основной внешний** MSI 2560x1440 @ 100 Гц по HDMI-A-1. Конфиг niri должен поддерживать оба, производительность мерить на 1440p.
+- Турбо-буст CPU отключён пользователем (`intel_pstate/no_turbo = 1`, управляет auto-cpufreq), CPU не выше 2.0 ГГц. **Никогда не включать турбо и не трогать auto-cpufreq/intel_pstate.** Частота iGPU от `no_turbo` не зависит. Все выходы подключены к Intel (`card1`, `renderD128`), у NVIDIA (`card0`, `renderD129`, драйвер nvidia-open 615) своих выходов нет. niri рендерит на Intel; при попытке инициализировать NVIDIA получил `Failed to initialize EGL`. Рендер на NVIDIA только как опциональный профиль (PLAN.md, этап 2.5). Блюр и шейдеры проверять на производительность.
 - GitHub: https://github.com/shaurma228/giga-niri (публичный, ветка `main`).
 - Рядом стоит KDE Plasma 6.8 со своими темами.
 
