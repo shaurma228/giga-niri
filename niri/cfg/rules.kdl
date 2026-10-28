@@ -54,6 +54,23 @@ layer-rule {
     }
 }
 
+// Поиск по системе (giga-niri/shell/SearchWindow.qml), как Spotlight
+layer-rule {
+    match namespace="^giga-search$"
+    geometry-corner-radius 26
+    shadow {
+        on
+        softness 60
+        spread 0
+        offset x=0 y=20
+        color "#000000a6"
+    }
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 // Пункт управления и карточки (giga-niri/shell): настоящий блюр и тень
 layer-rule {
     match namespace="^giga-popup$"

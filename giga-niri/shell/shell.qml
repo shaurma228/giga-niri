@@ -1,7 +1,9 @@
+//@ pragma IconTheme McMojave-circle
 // Пункт управления и всплывающие меню giga-niri в стиле macOS 27:
 // control (Пункт управления) → wifi / bluetooth / audio, а также calendar.
 // Запуск: qs -p ~/.config/giga-niri/shell
 // Открыть/закрыть: qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi
+// Поиск по системе (Alt+Space): qs -p ~/.config/giga-niri/shell ipc call search toggle
 //
 // Блюр под карточкой даёт niri (layer-rule для namespace "giga-popup").
 
@@ -25,6 +27,16 @@ ShellRoot {
         focusedOutput.running = true
     }
 
+    function toggleSearch() {
+        if (searchWindow.open) {
+            searchWindow.open = false
+            return
+        }
+        current = ""
+        focusedOutput.pending = "search"
+        focusedOutput.running = true
+    }
+
     // Карточка открывается на мониторе, где сейчас фокус
     Process {
         id: focusedOutput
@@ -35,10 +47,26 @@ ShellRoot {
                 let name = ""
                 try { name = JSON.parse(text).name } catch (e) {}
                 root.targetScreen = Quickshell.screens.find(s => s.name === name) ?? Quickshell.screens[0]
-                root.current = focusedOutput.pending
+                if (focusedOutput.pending === "search") {
+                    searchWindow.targetScreen = root.targetScreen
+                    searchWindow.open = true
+                } else {
+                    searchWindow.open = false
+                    root.current = focusedOutput.pending
+                }
             }
         }
     }
+
+    IpcHandler {
+        target: "search"
+        function toggle(): void { root.toggleSearch() }
+        function close(): void { searchWindow.open = false }
+        // Подставить запрос (для проверки и для открытия поиска с готовым текстом)
+        function setQuery(text: string): void { searchWindow.query = text }
+    }
+
+    SearchWindow { id: searchWindow }
 
     IpcHandler {
         target: "popup"
