@@ -92,8 +92,10 @@ giga-niri/
 Рендер niri на NVIDIA отклонён: Intel загружен на ~15% своей частоты, все мониторы подключены к Intel (кадры пришлось бы копировать по PCIe), а dGPU под нагрузкой ест в разы больше.
 Замер показал обратное: niri держал NVIDIA открытой, и она не засыпала ни разу (`runtime_suspended_time = 0`, P8 ~4 Вт).
 - [x] `debug { ignore-drm-device "/dev/dri/renderD129" }` в `cfg/misc.kdl`
-- [ ] После перезахода: `runtime_status` NVIDIA = `suspended`, `prime-run glxinfo -B` / игра будит её и работает
+- [x] После перезахода niri пишет `node is ignored, skipping`, ошибки EGL больше нет, ни один процесс не держит NVIDIA. `prime-run glxinfo -B` → RTX 3050, XWayland работает
+- [ ] NVIDIA всё равно не засыпает: драйвер сообщает `Runtime D3 status: Disabled by default` (`/proc/driver/nvidia/gpus/0000:01:00.0/power`), так было и в KDE с момента загрузки. Включается только системно: `options nvidia NVreg_DynamicPowerManagement=0x02` в `/etc/modprobe.d/` + `mkinitcpio -P` + перезагрузка. Решение пользователя, вне оформления
 - [ ] Номер render-узла может смениться между загрузками (порядок драйверов). Проверять `ls -l /dev/dri/by-path/`, если NVIDIA снова не засыпает
+- Заметка: при живой перезагрузке конфига с `ignore-drm-device` xwayland-satellite упал (panic, exit 101); niri перезапускает его по требованию, после перезахода всё работает
 
 ### 3. Обои
 - [x] Свои обои «ночной город + боке»: `scripts/make-wallpaper.py` → `wallpapers/tokyo-glass.png` (2560x1440, без проблем с лицензией)
