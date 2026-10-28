@@ -228,6 +228,18 @@ Scope {
             border.width: 1
             border.color: Theme.cardBorder
 
+            // Подсказка в пустой строке — по центру строки ввода
+            Label {
+                visible: input.text === ""
+                text: "Поиск по системе"
+                size: 22
+                color: Theme.muted
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: 0
+                height: 60
+                verticalAlignment: Text.AlignVCenter
+            }
+
             ColumnLayout {
                 id: column
                 width: parent.width
@@ -270,14 +282,6 @@ Scope {
                             } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                                 search.activate(search.sel); event.accepted = true
                             }
-                        }
-
-                        Label {
-                            visible: input.text === ""
-                            text: "Поиск по системе: программы, файлы, окна, калькулятор…"
-                            size: 22
-                            color: Theme.muted
-                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
                 }
