@@ -2,7 +2,7 @@
    подсветка значка-«пилюли» при наведении. Блюр под ней даёт niri. */
 
 * {
-    font-family: "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-family: "Inter", "JetBrainsMono Nerd Font Propo", sans-serif;
     font-size: 13px;
     min-height: 0;
     border: none;
@@ -54,7 +54,7 @@ tooltip label {
 
 #custom-logo {
     margin-left: 10px;
-    font-family: "JetBrainsMono Nerd Font";
+    font-family: "JetBrainsMono Nerd Font Propo";
     font-size: 16px;
 }
 
@@ -91,11 +91,12 @@ window#waybar.empty #window {
     font-weight: 600;
 }
 
+/* Propo: ширина значка равна рисунку, поэтому подсветка ровно по центру */
 #battery,
 #network,
 #custom-spotlight,
 #custom-control {
-    font-family: "Inter", "JetBrainsMono Nerd Font";
+    font-family: "Inter", "JetBrainsMono Nerd Font Propo";
     font-size: 15px;
 }
 

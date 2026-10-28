@@ -27,7 +27,7 @@ Singleton {
     readonly property color dark: "#1c1c1e"
 
     readonly property string font: "Inter"
-    readonly property string iconFont: "JetBrainsMono Nerd Font"
+    readonly property string iconFont: "JetBrainsMono Nerd Font Propo"
 
     // Единые скругления, как в macOS 27: 22 — у всех поверхностей (окна, меню fuzzel,
     // поиск, Пункт управления, уведомления), 14 — у всего внутри них.
