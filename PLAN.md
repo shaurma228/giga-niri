@@ -68,7 +68,14 @@ giga-niri/
 - [ ] `window-rule`: `geometry-corner-radius 18`, `clip-to-geometry true`, тени (softness 40, spread 4)
 - [ ] Глобальный `blur {}` и `background-effect { blur true }` для терминала, лаунчера, бара, уведомлений
 - [ ] Прозрачность: alacritty `opacity 0.72`, остальные окна непрозрачные (блюр на всех окнах тяжёлый)
-- [ ] Проверка нагрузки на Intel UHD: `niri msg` / визуально, при подлагиваниях включить xray-блюр
+- [ ] Проверка нагрузки на Intel UHD: `intel_gpu_top` (пакет `intel-gpu-tools`) + визуально, при подлагиваниях сначала включить xray-блюр
+
+### 2.5. Эксперимент с NVIDIA (только если Intel не тянет)
+Все выходы (eDP-1, HDMI, DP) подключены к Intel `card1`, у RTX 3050 (`card0`, `renderD129`) своих выходов нет. Рендер на NVIDIA = копирование каждого кадра через PCIe на Intel и постоянно активная dGPU (сейчас простаивает в P8 ~4 Вт).
+- [ ] Выяснить, почему niri не смог инициализировать EGL на NVIDIA (`journalctl -b -1 | grep -i egl`). Пакеты `egl-gbm`, `egl-wayland`, профиль `limit-vram-usage` уже есть
+- [ ] Отдельный `cfg/gpu-nvidia.kdl` с `debug { render-drm-device "/dev/dri/renderD129" }`, подключается одной строкой `include`
+- [ ] Сравнить плавность и задержку, замерить потребление от батареи (`nvidia-smi`, `powertop`)
+- [ ] Решение: Intel по умолчанию, NVIDIA как опциональный профиль «от сети»
 
 ### 3. Обои
 - [ ] Подобрать обои «ночной город + боке» в 1920×1080 (с лицензией) или сгенерировать свои
