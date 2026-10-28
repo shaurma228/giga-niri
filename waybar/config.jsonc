@@ -1,101 +1,106 @@
-// Waybar для giga-niri: тонкая стеклянная полоса сверху (Tokyo Glass).
-// Блюр под баром даёт niri (layer-rule в niri/cfg/rules.kdl).
+// Строка меню giga-niri в стиле macOS 27: слева значок системы, имя активной
+// программы и рабочие столы (тайлинг), справа значки состояния, Spotlight,
+// Пункт управления и часы. Сгенерирована вручную, значки — Material Design Nerd Font.
 {
     "layer": "top",
     "position": "top",
     "height": 30,
-    "spacing": 0,
-
-    "modules-left": ["custom/logo", "custom/sep", "niri/workspaces", "custom/sep", "niri/window"],
-    "modules-right": ["tray", "niri/language", "network", "bluetooth", "pulseaudio", "battery", "clock", "custom/power"],
-
-    "custom/power": {
-        "format": "󰐥",
-        "tooltip-format": "Меню питания (Mod+Shift+Q)",
+    "spacing": 2,
+    "modules-left": [
+        "custom/logo",
+        "niri/window",
+        "niri/workspaces"
+    ],
+    "modules-right": [
+        "tray",
+        "niri/language",
+        "battery",
+        "network",
+        "custom/spotlight",
+        "custom/control",
+        "clock"
+    ],
+    "custom/logo": {
+        "format": "󰣇",
+        "tooltip-format": "Меню системы (Mod+Shift+Q)",
         "on-click": "~/.config/giga-niri/power-menu.sh"
     },
-
-    "custom/logo": {
-        "format": "niri",
-        "tooltip-format": "Overview (Mod+O)",
-        "on-click": "niri msg action toggle-overview"
-    },
-
-    "custom/sep": {
-        "format": "│",
+    "niri/window": {
+        "format": "{app_id}",
+        "separate-outputs": true,
+        "icon": false,
+        "rewrite": {
+            "": "Рабочий стол",
+            "Alacritty": "Терминал",
+            "google-chrome": "Chrome",
+            "firefox": "Firefox",
+            "org.kde.dolphin": "Dolphin",
+            "systemsettings": "Параметры системы",
+            "code": "Code",
+            "org.telegram.desktop": "Telegram",
+            "steam": "Steam",
+            "vesktop": "Discord",
+            "Throne": "Throne",
+            "(.*)": "$1"
+        },
         "tooltip": false
     },
-
     "niri/workspaces": {
-        "format": "{index}"
-    },
-
-    "niri/window": {
-        "format": "{title}",
-        "max-length": 70,
-        "separate-outputs": true,
-        "rewrite": {
-            "(.*) — Google Chrome": "$1",
-            "(.*) - Google Chrome": "$1"
+        "format": "{icon}",
+        "format-icons": {
+            "active": "●",
+            "default": "○"
         }
     },
-
     "tray": {
         "icon-size": 15,
         "spacing": 10
     },
-
-    // Без общего "format": вместе с format-<язык> он даёт "argument not found"
     "niri/language": {
         "format-en": "EN",
         "format-ru": "RU",
         "tooltip-format": "{long}"
     },
-
-    "network": {
-        "interface": "wlan0",
-        "format-wifi": "󰤨 {essid}",
-        "format-ethernet": "󰈀 {ifname}",
-        "format-disconnected": "󰤭 нет сети",
-        "tooltip-format-wifi": "{essid} · {signalStrength}%\n{ipaddr}",
-        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi"
-    },
-
-    "bluetooth": {
-        "format": "󰂯",
-        "format-off": "󰂲",
-        "format-disabled": "󰂲",
-        "format-connected": "󰂱 {device_alias}",
-        "tooltip-format": "{controller_alias}: {status}",
-        "tooltip-format-connected": "{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}",
-        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle bluetooth"
-    },
-
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-muted": "󰝟 выкл",
-        "format-icons": ["󰕿", "󰖀", "󰕾"],
-        "scroll-step": 5,
-        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle audio",
-        "on-click-middle": "pavucontrol",
-        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-    },
-
     "battery": {
         "bat": "BAT0",
-        "states": { "warning": 25, "critical": 12 },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰚥 {capacity}%",
-        "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"],
+        "states": {
+            "warning": 25,
+            "critical": 12
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}%  ",
+        "format-plugged": "{capacity}%  ",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
         "tooltip-format": "{timeTo}"
     },
-
+    "network": {
+        "interface": "wlan0",
+        "format-wifi": "󰤨",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤮",
+        "tooltip-format-wifi": "{essid} · {signalStrength}%",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi"
+    },
+    "custom/spotlight": {
+        "format": "󰍉",
+        "tooltip-format": "Spotlight (Mod+D)",
+        "on-click": "fuzzel"
+    },
+    "custom/control": {
+        "format": "󰔡",
+        "tooltip-format": "Пункт управления",
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle control"
+    },
     "clock": {
-        "format": "{:%H:%M}",
-        "locale": "ru_RU.UTF-8",
-        "tooltip-format": "{:%A, %d %B}",
+        "format": "{:L%a %d %b  %H:%M}",
+        "locale": "ru_RU.utf8",
+        "tooltip": false,
         "on-click": "qs -p ~/.config/giga-niri/shell ipc call popup toggle calendar"
     }
 }

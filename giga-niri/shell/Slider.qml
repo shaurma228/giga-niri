@@ -1,45 +1,40 @@
 import QtQuick
 
-// Ползунок 0..1 с градиентной заливкой. Сообщает moved(value), значение задаётся снаружи.
+// Ползунок в стиле Пункта управления macOS: толстая «пилюля», белая заливка,
+// значок внутри слева. Значение 0..1 задаётся снаружи, движение сообщает moved().
 Item {
     id: root
 
     property real value: 0
+    property int iconCode: 0
     signal moved(real value)
 
-    implicitHeight: 24
+    implicitHeight: 28
 
     function setFrom(x) { root.moved(Math.max(0, Math.min(1, x / width))) }
 
     Rectangle {
         id: track
-        anchors.verticalCenter: parent.verticalCenter
-        width: parent.width
-        height: 6
-        radius: 3
-        color: Theme.track
+        anchors.fill: parent
+        radius: height / 2
+        color: "#2effffff"
+        clip: true
 
         Rectangle {
-            width: Math.max(height, parent.width * root.value)
-            height: parent.height
-            radius: 3
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0; color: Theme.blue }
-                GradientStop { position: 1; color: Theme.magenta }
-            }
+            width: Math.max(track.height, track.width * root.value)
+            height: track.height
+            radius: track.radius
+            color: "#f2ffffff"
         }
     }
 
-    Rectangle {
-        width: 16
-        height: 16
-        radius: 8
+    Icon {
+        visible: root.iconCode !== 0
+        code: root.iconCode
+        size: 15
+        x: 9
         anchors.verticalCenter: parent.verticalCenter
-        x: Math.max(0, Math.min(root.width - width, root.width * root.value - width / 2))
-        color: Theme.fg
-        border.width: 3
-        border.color: Theme.magenta
+        color: root.value * root.width > 26 ? "#1c1c1e" : Theme.fg
     }
 
     MouseArea {

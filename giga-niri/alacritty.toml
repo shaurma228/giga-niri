@@ -1,12 +1,13 @@
 # Alacritty внутри niri. Берёт ваш обычный конфиг и переопределяет поверх него
 # только то, что нужно оформлению. Сам ~/.config/alacritty не меняется.
+# Цвета — системная палитра macOS для тёмного режима.
 
 [general]
 import = ["~/.config/alacritty/alacritty.toml"]
 
 [window]
-# Полупрозрачный фон: под ним блюр niri (матовое стекло)
-opacity = 0.72
+# Полупрозрачный фон: под ним блюр niri (стекло, как Terminal в macOS)
+opacity = 0.78
 padding = { x = 16, y = 14 }
 decorations = "None"
 
@@ -16,38 +17,37 @@ bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
 italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
 bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
 
-# Tokyo Night (night)
 [colors]
 draw_bold_text_with_bright_colors = false
 
 [colors.primary]
-background = "#1a1b26"
-foreground = "#c0caf5"
+background = "#1c1c1e"
+foreground = "#f2f2f7"
 
 [colors.cursor]
-text = "#1a1b26"
-cursor = "#c0caf5"
+text = "#1c1c1e"
+cursor = "#0a84ff"
 
 [colors.selection]
 text = "CellForeground"
-background = "#33467c"
+background = "#1f4f8f"
 
 [colors.normal]
-black = "#15161e"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
-blue = "#7aa2f7"
-magenta = "#bb9af7"
-cyan = "#7dcfff"
-white = "#a9b1d6"
+black = "#1c1c1e"
+red = "#ff453a"
+green = "#32d74b"
+yellow = "#ffd60a"
+blue = "#0a84ff"
+magenta = "#bf5af2"
+cyan = "#64d2ff"
+white = "#d1d1d6"
 
 [colors.bright]
-black = "#414868"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
-blue = "#7aa2f7"
-magenta = "#bb9af7"
-cyan = "#7dcfff"
-white = "#c0caf5"
+black = "#636366"
+red = "#ff6961"
+green = "#4ae16a"
+yellow = "#ffe050"
+blue = "#409cff"
+magenta = "#da8fff"
+cyan = "#8ae1ff"
+white = "#f2f2f7"

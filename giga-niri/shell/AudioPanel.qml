@@ -8,6 +8,7 @@ ColumnLayout {
     id: root
 
     signal requestClose()
+    signal requestBack()
 
     readonly property var sink: Pipewire.defaultAudioSink
     readonly property var source: Pipewire.defaultAudioSource
@@ -27,10 +28,11 @@ ColumnLayout {
     PanelHeader {
         Layout.fillWidth: true
         iconCode: root.volumeIcon(root.sink)
-        iconColor: Theme.orange
         title: "Звук"
         subtitle: root.sink ? (root.sink.description || root.sink.nickname || root.sink.name) : "Нет устройства"
         showToggle: false
+        iconActive: true
+        onBack: root.requestBack()
     }
 
     Repeater {
@@ -75,6 +77,7 @@ ColumnLayout {
                 }
                 Slider {
                     Layout.fillWidth: true
+                    implicitHeight: 22
                     value: audio ? Math.min(1, audio.volume) : 0
                     opacity: audio && audio.muted ? 0.5 : 1
                     onMoved: v => { audio.volume = v; if (audio.muted && v > 0) audio.muted = false }

@@ -1,34 +1,35 @@
-# Уведомления giga-niri (Tokyo Glass). Перечитать: makoctl reload
-# Блюр под ними даёт niri (layer-rule для namespace "notifications").
+# Уведомления giga-niri в стиле macOS 27: стеклянная карточка справа сверху,
+# значок программы слева, жирный заголовок. Перечитать: makoctl reload
+# Блюр и тень даёт niri (layer-rule для namespace "notifications").
 
 font=Inter 11
-width=380
-padding=14,18
+width=360
+padding=14,16
 # margin=0: поверхность слоя ровно по карточке, иначе блюр niri
 # закрашивает прямоугольник вокруг скруглённых углов. Отступ от края — outer-margin.
 margin=0
-outer-margin=14,14,0,0
+outer-margin=10,10,0,0
 max-visible=4
-border-size=2
-border-radius=18
+border-size=1
+border-radius=20
 icons=1
 max-icon-size=48
 icon-path=/home/goydaslav/.local/share/giga-niri/mako-icons:/home/goydaslav/.local/share/icons/Tela-dark
-default-timeout=6000
+default-timeout=5000
 anchor=top-right
 
-background-color=#1a1b26cc
-text-color=#c0caf5
-border-color=#7aa2f7cc
-progress-color=over #7aa2f744
+background-color=#1e1e20cc
+text-color=#f2f2f7
+border-color=#ffffff30
+progress-color=over #0a84ff55
 
 format=<b>%s</b>\n%b
 
 [urgency=low]
-border-color=#565f89cc
+text-color=#d1d1d6
 
 [urgency=critical]
-border-color=#f7768e
+border-color=#ff453a
 default-timeout=0
 
 [mode=do-not-disturb]

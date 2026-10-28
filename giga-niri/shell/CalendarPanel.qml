@@ -52,11 +52,11 @@ ColumnLayout {
                 return s.charAt(0).toUpperCase() + s.slice(1)
             }
             size: 14
-            color: Theme.magenta
+            color: Theme.subtle
         }
     }
 
-    Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: Theme.track }
+    Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: "#1fffffff" }
 
     RowLayout {
         Layout.fillWidth: true
@@ -116,7 +116,7 @@ ColumnLayout {
                 required property int index
                 text: modelData
                 size: 11
-                color: index >= 5 ? Theme.magenta : Theme.muted
+                color: Theme.muted
                 horizontalAlignment: Text.AlignHCenter
                 Layout.fillWidth: true
             }
@@ -129,23 +129,25 @@ ColumnLayout {
                 Layout.fillWidth: true
                 implicitHeight: 38
                 radius: 12
-                gradient: modelData.today ? todayGradient : null
                 color: "transparent"
 
-                Gradient {
-                    id: todayGradient
-                    orientation: Gradient.Horizontal
-                    GradientStop { position: 0; color: Theme.blue }
-                    GradientStop { position: 1; color: Theme.magenta }
+                // Сегодня — красный кружок, как в Календаре macOS
+                Rectangle {
+                    visible: modelData.today
+                    anchors.centerIn: parent
+                    width: 32
+                    height: 32
+                    radius: 16
+                    color: Theme.red
                 }
 
                 Label {
                     anchors.centerIn: parent
                     text: modelData.day
                     bold: modelData.today
-                    color: modelData.today ? Theme.dark
-                        : !modelData.inMonth ? Theme.track
-                        : modelData.weekend ? Theme.magenta
+                    color: modelData.today ? "#ffffff"
+                        : !modelData.inMonth ? "#48484a"
+                        : modelData.weekend ? Theme.muted
                         : Theme.fg
                 }
             }

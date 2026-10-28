@@ -1,7 +1,8 @@
-// Раскладка окон и рамки в стиле Tokyo Glass.
+// Раскладка окон в стиле macOS 27: без цветной рамки фокуса, тонкий светлый
+// контур как у окон macOS, мягкие тени (у активного окна глубже — rules.kdl).
 
 layout {
-    gaps 16
+    gaps 12
     center-focused-column "never"
 
     // Прозрачный фон рабочего стола, иначе он закрывает обои (awww)
@@ -14,25 +15,23 @@ layout {
     }
     default-column-width { proportion 0.5; }
 
-    // Градиентная рамка активного окна: blue → magenta Tokyo Night.
-    // relative-to="workspace-view": градиент общий на весь экран и
-    // «переливается» при прокрутке колонок.
     focus-ring {
-        width 2
-        active-gradient from="#7aa2f7" to="#bb9af7" angle=135 relative-to="workspace-view" in="oklch shorter hue"
-        inactive-color "#3b4261"
-    }
-
-    border {
         off
     }
 
-    // Мягкая тень, чтобы стекло «висело» над обоями
+    // Волосяной контур: у активного окна ярче
+    border {
+        width 1
+        active-color "#ffffff3d"
+        inactive-color "#ffffff17"
+        urgent-color "#ff453a"
+    }
+
     shadow {
         on
-        softness 40
-        spread 4
-        offset x=0 y=8
-        color "#0000008c"
+        softness 50
+        spread 0
+        offset x=0 y=14
+        color "#00000099"
     }
 }

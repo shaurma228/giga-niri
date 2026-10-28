@@ -1,4 +1,5 @@
-// Всплывающие меню giga-niri: Wi-Fi, Bluetooth, календарь, звук.
+// Пункт управления и всплывающие меню giga-niri в стиле macOS 27:
+// control (Пункт управления) → wifi / bluetooth / audio, а также calendar.
 // Запуск: qs -p ~/.config/giga-niri/shell
 // Открыть/закрыть: qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi
 //
@@ -72,7 +73,7 @@ ShellRoot {
         anchors { top: true; right: true }
         margins { top: 38; right: 12 }
         exclusionMode: ExclusionMode.Ignore
-        implicitWidth: 380
+        implicitWidth: root.current === "calendar" ? 330 : 360
         implicitHeight: card.implicitHeight
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "giga-popup"
@@ -109,6 +110,7 @@ ShellRoot {
                 y: Theme.pad
                 width: parent.width - Theme.pad * 2
                 sourceComponent: ({
+                    control: controlPanel,
                     wifi: wifiPanel,
                     bluetooth: bluetoothPanel,
                     audio: audioPanel,
@@ -119,18 +121,35 @@ ShellRoot {
     }
 
     Component {
+        id: controlPanel
+        ControlCenterPanel {
+            onRequestClose: root.current = ""
+            onOpen: page => root.current = page
+        }
+    }
+
+    Component {
         id: wifiPanel
-        WifiPanel { onRequestClose: root.current = "" }
+        WifiPanel {
+            onRequestClose: root.current = ""
+            onRequestBack: root.current = "control"
+        }
     }
 
     Component {
         id: bluetoothPanel
-        BluetoothPanel { onRequestClose: root.current = "" }
+        BluetoothPanel {
+            onRequestClose: root.current = ""
+            onRequestBack: root.current = "control"
+        }
     }
 
     Component {
         id: audioPanel
-        AudioPanel { onRequestClose: root.current = "" }
+        AudioPanel {
+            onRequestClose: root.current = ""
+            onRequestBack: root.current = "control"
+        }
     }
 
     Component {

@@ -8,6 +8,7 @@ ColumnLayout {
     id: root
 
     signal requestClose()
+    signal requestBack()
 
     readonly property var adapter: Bluetooth.defaultAdapter
     readonly property bool enabled: adapter !== null && adapter.enabled
@@ -57,12 +58,13 @@ ColumnLayout {
             : "Нет подключений"
         checked: root.enabled
         onToggled: if (root.adapter) root.adapter.enabled = !root.adapter.enabled
+        onBack: root.requestBack()
     }
 
     ListRow {
         visible: root.enabled
         iconCode: 0xF0349 // magnify
-        iconColor: Theme.magenta
+        iconColor: Theme.blue
         title: root.adapter && root.adapter.discovering ? "Идёт поиск устройств…" : "Найти устройства"
         busy: root.adapter !== null && root.adapter.discovering
         onClicked: {

@@ -3,31 +3,35 @@ pragma Singleton
 import QtQuick
 import Quickshell
 
-// Цвета и шрифты Tokyo Glass. Цвета с прозрачностью в Qt: #AARRGGBB.
+// Цвета и шрифты в стиле macOS 27 (тёмный режим, Liquid Glass).
+// Системные цвета Apple для тёмного режима. Цвета с прозрачностью в Qt: #AARRGGBB.
 Singleton {
-    readonly property color card: "#e01a1b26"
-    readonly property color cardBorder: "#807aa2f7"
-    readonly property color row: "#14c0caf5"
-    readonly property color rowHover: "#267aa2f7"
-    readonly property color rowActive: "#3d7aa2f7"
-    readonly property color track: "#3b4261"
+    // Стекло: плотнее, чем в Tahoe (macOS 27 снизил прозрачность), светлая кромка
+    readonly property color card: "#c41e1e20"
+    readonly property color cardBorder: "#30ffffff"
+    readonly property color tile: "#1fffffff"
+    readonly property color row: "#14ffffff"
+    readonly property color rowHover: "#24ffffff"
+    readonly property color rowActive: "#2b0a84ff"
+    readonly property color track: "#3a3a3c"
 
-    readonly property color fg: "#c0caf5"
-    readonly property color subtle: "#a9b1d6"
-    readonly property color muted: "#565f89"
-    readonly property color blue: "#7aa2f7"
-    readonly property color magenta: "#bb9af7"
-    readonly property color cyan: "#7dcfff"
-    readonly property color green: "#9ece6a"
-    readonly property color orange: "#ff9e64"
-    readonly property color red: "#f7768e"
-    readonly property color dark: "#16161e"
+    readonly property color fg: "#f2f2f7"
+    readonly property color subtle: "#aeaeb2"
+    readonly property color muted: "#8e8e93"
+    readonly property color blue: "#0a84ff"
+    readonly property color magenta: "#bf5af2"
+    readonly property color cyan: "#64d2ff"
+    readonly property color green: "#30d158"
+    readonly property color orange: "#ff9f0a"
+    readonly property color red: "#ff453a"
+    readonly property color dark: "#1c1c1e"
 
     readonly property string font: "Inter"
     readonly property string iconFont: "JetBrainsMono Nerd Font"
 
-    readonly property int radius: 20
-    readonly property int pad: 18
+    readonly property int radius: 22
+    readonly property int tileRadius: 18
+    readonly property int pad: 14
 
     // Значки Nerd Font (Material Design) по коду: так их не испортит запись файла
     function icon(code) { return String.fromCodePoint(code) }

@@ -1,17 +1,27 @@
-// Правила окон.
+// Правила окон и панелей в стиле macOS 27 (Liquid Glass).
 
-// Скругления у всех окон. clip-to-geometry обрезает содержимое по скруглению.
-// draw-border-with-background false: рамка фокуса только по контуру,
-// иначе её заливка просвечивает сквозь полупрозрачные окна.
+// Скругления у всех окон, как в macOS 27 — одинаковые везде.
+// clip-to-geometry обрезает содержимое по скруглению.
+// draw-border-with-background false: контур только по краю,
+// иначе он просвечивает сквозь полупрозрачные окна.
 window-rule {
-    geometry-corner-radius 18
+    geometry-corner-radius 22
     clip-to-geometry true
     draw-border-with-background false
 }
 
-// Матовое стекло: блюр под полупрозрачными окнами.
-// По умолчанию xray: размываются только обои, а не окна под окном.
-// Это считается один раз и почти не нагружает видеокарту.
+// Неактивные окна: тень мягче, активное «ближе» (macOS 27: активные окна заметнее)
+window-rule {
+    match is-focused=false
+    shadow {
+        softness 36
+        offset x=0 y=8
+        color "#00000059"
+    }
+}
+
+// Стекло: блюр под полупрозрачным терминалом.
+// xray (по умолчанию): размываются только обои — почти бесплатно для видеокарты.
 window-rule {
     match app-id="^Alacritty$"
     background-effect {
@@ -19,7 +29,7 @@ window-rule {
     }
 }
 
-// Бар: стекло (xray-блюр обоев под полупрозрачной полосой)
+// Строка меню: лёгкое стекло поверх обоев
 layer-rule {
     match namespace="^waybar$"
     background-effect {
@@ -27,40 +37,54 @@ layer-rule {
     }
 }
 
-// Лаунчер: настоящий блюр (размывает и окна под собой, а не только обои).
-// Он открыт секунды, поэтому дорогой блюр здесь допустим.
+// Spotlight (fuzzel): настоящий блюр — размывает и окна под собой. Открыт секунды.
 layer-rule {
     match namespace="^launcher$"
-    geometry-corner-radius 24
+    geometry-corner-radius 26
+    shadow {
+        on
+        softness 60
+        spread 0
+        offset x=0 y=20
+        color "#000000a6"
+    }
     background-effect {
         blur true
         xray false
     }
 }
 
-// Всплывающие карточки (giga-niri/shell): настоящий блюр и тень, как у лаунчера
+// Пункт управления и карточки (giga-niri/shell): настоящий блюр и тень
 layer-rule {
     match namespace="^giga-popup$"
+    geometry-corner-radius 22
+    shadow {
+        on
+        softness 50
+        spread 0
+        offset x=0 y=14
+        color "#00000099"
+    }
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Уведомления
+layer-rule {
+    match namespace="^notifications$"
     geometry-corner-radius 20
     shadow {
         on
-        softness 40
-        spread 4
+        softness 30
+        spread 0
         offset x=0 y=8
-        color "#0000008c"
+        color "#00000080"
     }
     background-effect {
         blur true
         xray false
-    }
-}
-
-// Уведомления: xray-блюр, как у бара
-layer-rule {
-    match namespace="^notifications$"
-    geometry-corner-radius 18
-    background-effect {
-        blur true
     }
 }
 

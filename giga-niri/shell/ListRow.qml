@@ -56,7 +56,7 @@ Rectangle {
         Icon {
             code: 0xF0450 // refresh
             size: 14
-            color: Theme.magenta
+            color: Theme.blue
             visible: root.busy
             RotationAnimation on rotation {
                 running: root.busy

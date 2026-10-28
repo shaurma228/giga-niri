@@ -8,6 +8,7 @@ ColumnLayout {
     id: root
 
     signal requestClose()
+    signal requestBack()
 
     readonly property var wifi: Networking.devices.values.find(d => d.type === DeviceType.Wifi) ?? null
     readonly property var networks: wifi
@@ -63,6 +64,7 @@ ColumnLayout {
             : "Не подключено"
         checked: Networking.wifiEnabled
         onToggled: Networking.wifiEnabled = !Networking.wifiEnabled
+        onBack: root.requestBack()
     }
 
     Label {

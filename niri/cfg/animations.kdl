@@ -1,35 +1,34 @@
 // СГЕНЕРИРОВАНО scripts/build-animations.py из niri/animations.kdl.in и shaders/*.frag.
 // Не править вручную.
 
-// Анимации giga-niri. Шаблон: маркер @shader + (имя) заменяется на shaders/<имя>.frag.
+// Анимации в духе macOS: плавные пружины без отскока.
+// Шаблон: маркер @shader + (имя) заменяется на shaders/<имя>.frag.
 // Сборка: python3 -I scripts/build-animations.py
 
 animations {
-    // Переключение рабочих столов и прокрутка колонок: пружина с лёгким «пружинением»
     workspace-switch {
-        spring damping-ratio=0.82 stiffness=700 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
     }
     horizontal-view-movement {
-        spring damping-ratio=0.85 stiffness=750 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
     }
     window-movement {
-        spring damping-ratio=0.85 stiffness=750 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
     }
     window-resize {
-        spring damping-ratio=0.9 stiffness=800 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
     }
     overview-open-close {
-        spring damping-ratio=0.88 stiffness=650 epsilon=0.0001
+        spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
     }
 
-    // Открытие: стекло проявляется с бликом
+    // Открытие: окно вырастает и проявляется
     window-open {
-        duration-ms 340
-        curve "ease-out-cubic"
+        duration-ms 280
+        curve "ease-out-expo"
         custom-shader r#"
-// Открытие окна: «стекло проявляется».
-// Окно чуть увеличивается и поднимается снизу, проявляясь из прозрачности,
-// а по нему наискосок проходит блик в цветах рамки (#7aa2f7 → #bb9af7).
+// Открытие окна в духе macOS: окно плавно вырастает из чуть меньшего размера,
+// приподнимаясь и проявляясь. Без блика и эффектов — спокойно, как у Apple.
 //
 // coords_geo: координаты пикселя относительно окна (0..1), size_geo: размер окна в px.
 // Цвет возвращается premultiplied.
@@ -37,63 +36,37 @@ animations {
 vec4 open_color(vec3 coords_geo, vec3 size_geo) {
     float p = niri_clamped_progress;
 
-    float scale = mix(0.93, 1.0, p);
+    float scale = mix(0.9, 1.0, p);
     vec2 uv = (coords_geo.xy - 0.5) / scale + 0.5;
-    uv.y += (1.0 - p) * 0.035;
+    uv.y += (1.0 - p) * 0.02;
 
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0)
         return vec4(0.0);
 
     vec4 color = texture2D(niri_tex, (niri_geo_to_tex * vec3(uv, 1.0)).st);
-
-    // Блик: диагональная полоса пробегает от левого верхнего угла к правому нижнему
-    float d = (uv.x + uv.y) * 0.5;
-    float band = smoothstep(0.14, 0.0, abs(d - (p * 1.5 - 0.25)));
-    vec3 accent = mix(vec3(0.478, 0.635, 0.969), vec3(0.733, 0.604, 0.969), uv.x);
-    color.rgb += accent * band * 0.45 * color.a * (1.0 - p * 0.6);
-
-    return color * p;
+    return color * smoothstep(0.0, 0.6, p);
 }
 "#
     }
 
-    // Закрытие: окно рассыпается на светящиеся стекляшки
+    // Закрытие: окно сжимается и гаснет
     window-close {
-        duration-ms 420
+        duration-ms 220
         curve "ease-out-quad"
         custom-shader r#"
-// Закрытие окна: «рассыпается на стекляшки».
-// Окно распадается на квадратики 8×8 px снизу вверх (так выходит на экране)
-// со случайным разбросом,
-// по краю распада светится кайма в цветах рамки, окно слегка уменьшается.
-
-float giga_hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-}
+// Закрытие окна в духе macOS: окно сжимается к центру и быстро гаснет.
 
 vec4 close_color(vec3 coords_geo, vec3 size_geo) {
     float p = niri_clamped_progress;
 
-    float scale = mix(1.0, 0.96, p);
+    float scale = mix(1.0, 0.88, p);
     vec2 uv = (coords_geo.xy - 0.5) / scale + 0.5;
 
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0)
         return vec4(0.0);
 
     vec4 color = texture2D(niri_tex, (niri_geo_to_tex * vec3(uv, 1.0)).st);
-
-    // Порог распада для клетки: случайный, плюс сдвиг по высоте окна
-    vec2 cell = floor(uv * size_geo.xy / 8.0);
-    float t = giga_hash(cell + niri_random_seed * 17.0) * 0.55 + uv.y * 0.45;
-    float edge = p * 1.12;
-
-    float alive = smoothstep(edge, edge + 0.05, t);
-    float glow = clamp(1.0 - abs(t - edge - 0.04) / 0.04, 0.0, 1.0);
-
-    vec3 accent = mix(vec3(0.478, 0.635, 0.969), vec3(0.733, 0.604, 0.969), uv.x);
-    color.rgb += accent * glow * 0.9 * color.a;
-
-    return color * alive;
+    return color * (1.0 - smoothstep(0.0, 0.85, p));
 }
 "#
     }

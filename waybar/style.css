@@ -1,131 +1,121 @@
-/* Tokyo Glass: полупрозрачная полоса, блюр под ней рисует niri */
+/* Строка меню в стиле macOS 27: почти прозрачная, белый текст с тенью,
+   подсветка значка-«пилюли» при наведении. Блюр под ней даёт niri. */
 
 * {
-    font-family: "JetBrainsMono Nerd Font", monospace;
-    font-size: 12px;
+    font-family: "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 13px;
     min-height: 0;
     border: none;
     border-radius: 0;
 }
 
 window#waybar {
-    background: rgba(22, 22, 30, 0.6);
-    border-bottom: 1px solid rgba(122, 162, 247, 0.12);
-    color: #a9b1d6;
+    background: rgba(12, 10, 24, 0.22);
+    color: #ffffff;
 }
 
 tooltip {
-    background: rgba(26, 27, 38, 0.95);
-    border: 1px solid rgba(122, 162, 247, 0.35);
+    background: rgba(30, 30, 32, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
 }
 
 tooltip label {
-    color: #c0caf5;
+    color: #f2f2f7;
+}
+
+#custom-logo,
+#window,
+#workspaces button,
+#tray,
+#language,
+#battery,
+#network,
+#custom-spotlight,
+#custom-control,
+#clock {
+    padding: 0 8px;
+    margin: 3px 0;
+    border-radius: 7px;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    background: transparent;
+}
+
+#custom-logo:hover,
+#workspaces button:hover,
+#battery:hover,
+#network:hover,
+#custom-spotlight:hover,
+#custom-control:hover,
+#clock:hover {
+    background: rgba(255, 255, 255, 0.16);
 }
 
 #custom-logo {
-    padding: 0 6px 0 16px;
-    color: #7aa2f7;
-    font-weight: bold;
+    margin-left: 10px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 16px;
 }
 
-#custom-sep {
-    padding: 0 6px;
-    color: #565f89;
+#window {
+    font-weight: 700;
+}
+
+window#waybar.empty #window {
+    background: transparent;
 }
 
 #workspaces button {
-    padding: 0 5px;
-    color: #565f89;
-    background: transparent;
+    padding: 0 3px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.45);
     box-shadow: none;
 }
 
 #workspaces button.active {
-    color: #c0caf5;
-    font-weight: bold;
+    color: #ffffff;
 }
 
 #workspaces button.urgent {
-    color: #f7768e;
-}
-
-#workspaces button:hover {
-    color: #bb9af7;
-    background: rgba(122, 162, 247, 0.1);
-}
-
-#window {
-    color: #a9b1d6;
-}
-
-#tray,
-#language,
-#network,
-#bluetooth,
-#pulseaudio,
-#battery,
-#clock {
-    padding: 0 8px;
+    color: #ff453a;
 }
 
 #tray menu {
-    background: rgba(26, 27, 38, 0.95);
-    color: #c0caf5;
+    background: rgba(30, 30, 32, 0.95);
+    color: #f2f2f7;
 }
 
 #language {
-    color: #bb9af7;
+    font-size: 11px;
+    font-weight: 600;
 }
 
-#network {
-    color: #9ece6a;
-}
-
-#network.disconnected {
-    color: #565f89;
-}
-
-#bluetooth {
-    color: #7aa2f7;
-}
-
-#bluetooth.off,
-#bluetooth.disabled {
-    color: #565f89;
-}
-
-#pulseaudio {
-    color: #ff9e64;
-}
-
-#pulseaudio.muted {
-    color: #565f89;
+#battery,
+#network,
+#custom-spotlight,
+#custom-control {
+    font-family: "Inter", "JetBrainsMono Nerd Font";
+    font-size: 15px;
 }
 
 #battery {
-    color: #7dcfff;
+    font-size: 13px;
 }
 
 #battery.warning:not(.charging) {
-    color: #e0af68;
+    color: #ffd60a;
 }
 
 #battery.critical:not(.charging) {
-    color: #f7768e;
+    color: #ff453a;
+}
+
+#network.disconnected {
+    color: rgba(255, 255, 255, 0.45);
 }
 
 #clock {
-    color: #c0caf5;
-    font-weight: bold;
-}
-
-#custom-power {
-    padding: 0 16px 0 8px;
-    color: #565f89;
-}
-
-#custom-power:hover {
-    color: #f7768e;
+    margin-right: 10px;
+    font-weight: 500;
 }
