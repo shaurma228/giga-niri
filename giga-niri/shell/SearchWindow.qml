@@ -114,7 +114,7 @@ Scope {
         { title: "Сон", keys: "sleep suspend сон спящий", code: 0xF04B2,
           run: () => Quickshell.execDetached(["systemctl", "suspend"]) },
         { title: "Выключение, перезагрузка, выход", keys: "power shutdown reboot logout выключить выключение перезагрузка перезагрузить выход питание",
-          code: 0xF0425, run: () => Quickshell.execDetached([search.home + "/.config/giga-niri/power-menu.sh"]) },
+          code: 0xF0425, run: () => Quickshell.execDetached(["qs", "-p", search.home + "/.config/giga-niri/shell", "ipc", "call", "system", "toggle"]) },
         { title: "Параметры системы", keys: "settings параметры настройки система",
           code: 0xF0493, run: () => Quickshell.execDetached(["systemsettings"]) },
         { title: "Подсказка по клавишам", keys: "keys клавиши сочетания горячие хоткеи shortcuts",

@@ -148,7 +148,7 @@ binds {
     // == Сессия
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Super+Alt+L allow-when-locked=false hotkey-overlay-title="Заблокировать" { spawn-sh "pidof hyprlock || hyprlock -c ~/.config/giga-niri/hyprlock.conf"; }
-    Mod+Shift+Q hotkey-overlay-title="Меню питания" { spawn "/home/goydaslav/.config/giga-niri/power-menu.sh"; }
+    Mod+Shift+Q repeat=false hotkey-overlay-title="Меню системы: открыть / закрыть" { spawn "qs" "-p" "/home/goydaslav/.config/giga-niri/shell" "ipc" "call" "system" "toggle"; }
     Mod+Shift+E { quit; }
     Ctrl+Alt+Delete { quit; }
     Mod+Shift+P { power-off-monitors; }

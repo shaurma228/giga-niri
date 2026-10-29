@@ -23,7 +23,7 @@
     "custom/logo": {
         "format": "󰣇",
         "tooltip-format": "Меню системы (Mod+Shift+Q)",
-        "on-click": "~/.config/giga-niri/power-menu.sh"
+        "on-click": "qs -p ~/.config/giga-niri/shell ipc call system toggle"
     },
     "niri/window": {
         "format": "{app_id}",

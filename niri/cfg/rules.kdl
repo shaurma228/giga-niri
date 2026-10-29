@@ -88,6 +88,23 @@ layer-rule {
     }
 }
 
+// Системное меню (giga-niri/shell/SystemMenu.qml), как меню Apple в macOS
+layer-rule {
+    match namespace="^giga-system$"
+    geometry-corner-radius 22
+    shadow {
+        on
+        softness 50
+        spread 0
+        offset x=0 y=14
+        color "#00000099"
+    }
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 // Уведомления
 layer-rule {
     match namespace="^notifications$"

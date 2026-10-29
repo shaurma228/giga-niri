@@ -4,6 +4,7 @@
 // Запуск: qs -p ~/.config/giga-niri/shell
 // Открыть/закрыть: qs -p ~/.config/giga-niri/shell ipc call popup toggle wifi
 // Поиск по системе (Alt+Space): qs -p ~/.config/giga-niri/shell ipc call search toggle
+// Системное меню (как меню Apple): qs -p ~/.config/giga-niri/shell ipc call system toggle
 //
 // Блюр под карточкой даёт niri (layer-rule для namespace "giga-popup").
 
@@ -19,6 +20,7 @@ ShellRoot {
     property var targetScreen: Quickshell.screens[0]
 
     function toggle(name) {
+        systemMenu.open = false
         if (current === name) {
             current = ""
             return
@@ -28,12 +30,24 @@ ShellRoot {
     }
 
     function toggleSearch() {
+        systemMenu.open = false
         if (searchWindow.open) {
             searchWindow.open = false
             return
         }
         current = ""
         focusedOutput.pending = "search"
+        focusedOutput.running = true
+    }
+
+    function toggleSystem() {
+        if (systemMenu.open) {
+            systemMenu.open = false
+            return
+        }
+        current = ""
+        searchWindow.open = false
+        focusedOutput.pending = "system"
         focusedOutput.running = true
     }
 
@@ -48,10 +62,17 @@ ShellRoot {
                 try { name = JSON.parse(text).name } catch (e) {}
                 root.targetScreen = Quickshell.screens.find(s => s.name === name) ?? Quickshell.screens[0]
                 if (focusedOutput.pending === "search") {
+                    systemMenu.open = false
                     searchWindow.targetScreen = root.targetScreen
                     searchWindow.open = true
+                } else if (focusedOutput.pending === "system") {
+                    searchWindow.open = false
+                    root.current = ""
+                    systemMenu.targetScreen = root.targetScreen
+                    systemMenu.open = true
                 } else {
                     searchWindow.open = false
+                    systemMenu.open = false
                     root.current = focusedOutput.pending
                 }
             }
@@ -67,6 +88,16 @@ ShellRoot {
     }
 
     SearchWindow { id: searchWindow }
+
+    SystemMenu { id: systemMenu }
+
+    IpcHandler {
+        target: "system"
+        function toggle(): void { root.toggleSystem() }
+        function close(): void { systemMenu.open = false }
+        // Открыть страницу меню: about, force, confirm-reboot, confirm-poweroff, confirm-logout, menu
+        function page(name: string): void { systemMenu.page = name }
+    }
 
     IpcHandler {
         target: "popup"
