@@ -34,6 +34,9 @@ Singleton {
     // Те же значения в niri/cfg/rules.kdl, fuzzel/fuzzel.ini, mako/config.
     readonly property int radius: 22
     readonly property int innerRadius: 14
+    // Радиус окна Пункта управления, календаря и подстраниц — крупнее, как в macOS 27,
+    // т.к. внутри круглые плитки
+    readonly property int panelRadius: 30
     readonly property int pad: 12
 
     // Значки Nerd Font (Material Design) по коду: так их не испортит запись файла

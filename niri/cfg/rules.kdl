@@ -74,7 +74,7 @@ layer-rule {
 // Пункт управления и карточки (giga-niri/shell): настоящий блюр и тень
 layer-rule {
     match namespace="^giga-popup$"
-    geometry-corner-radius 22
+    geometry-corner-radius 30
     shadow {
         on
         softness 50

@@ -7,8 +7,9 @@ import Quickshell.Networking
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 
-// Пункт управления в стиле macOS 27: плитки Wi-Fi/Bluetooth, «Не беспокоить»,
-// блокировка, ползунки «Дисплей» и «Звук», «Сейчас играет».
+// Пункт управления в стиле macOS 27: стеклянные таблетки Wi-Fi/Bluetooth,
+// «Сейчас играет», «Не беспокоить», круглые кнопки, блокировка, раскладка,
+// тонкие ползунки «Дисплей» и «Звук».
 ColumnLayout {
     id: root
 
@@ -25,8 +26,11 @@ ColumnLayout {
     property bool dnd: false
     property real brightness: 0
     property bool hasBacklight: false
+    property string layout: ""
 
-    // Единый шаг 12: край карточки (Theme.pad), промежутки между плитками, поля плиток
+    readonly property var layoutShort: ({ "English (US)": "EN", "Russian": "RU" })
+
+    // Единый шаг 12: край карточки (Theme.pad), промежутки между плитками и строками
     spacing: 12
 
     PwObjectTracker { objects: [root.sink].filter(n => n) }
@@ -63,276 +67,415 @@ ColumnLayout {
         Quickshell.execDetached(["brightnessctl", "-q", "--class=backlight", "set", Math.round(brightness * 100) + "%"])
     }
 
-    // Плитка — скруглённая подложка Пункта управления
-    component Tile: Rectangle {
-        radius: Theme.innerRadius
-        color: Theme.tile
-        border.width: 1
-        border.color: "#12ffffff"
-    }
-
-    // Строка плитки связи: круглый значок-переключатель, название, состояние, «›»
-    component ConnRow: RowLayout {
-        id: conn
-        property int iconCode: 0
-        property bool on: false
-        property string title: ""
-        property string status: ""
-        signal toggled()
-        signal opened()
-        spacing: 10
-
-        Rectangle {
-            implicitWidth: 34
-            implicitHeight: 34
-            radius: 17
-            color: conn.on ? Theme.blue : "#33ffffff"
-            Behavior on color { ColorAnimation { duration: 160 } }
-            Icon { anchors.centerIn: parent; code: conn.iconCode; size: 17; color: "#ffffff" }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: conn.toggled()
-            }
-        }
-        // Текст и «›» открывают подстраницу
-        Item {
-            Layout.fillWidth: true
-            implicitHeight: 34
-            ColumnLayout {
-                anchors.left: parent.left
-                anchors.right: chevron.left
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: 0
-                Label { text: conn.title; size: 13; bold: true; Layout.fillWidth: true }
-                Label { text: conn.status; size: 11; color: Theme.muted; Layout.fillWidth: true }
-            }
-            Icon { id: chevron; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; code: 0xF0142; size: 16; color: Theme.muted }
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: conn.opened()
+    // Текущая раскладка клавиатуры из niri
+    Process {
+        id: keyRead
+        running: true
+        command: ["niri", "msg", "-j", "keyboard-layouts"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const k = JSON.parse(text)
+                    const name = k.names[k.current_idx]
+                    root.layout = root.layoutShort[name] ?? name.substring(0, 2).toUpperCase()
+                } catch (e) {
+                    root.layout = ""
+                }
             }
         }
     }
+    // После переключения раскладки niri обновляет состояние не сразу
+    Timer {
+        id: keyRefresh
+        interval: 200
+        onTriggered: keyRead.running = true
+    }
 
-    // Квадратная плитка-кнопка
-    component SquareTile: Tile {
-        id: sq
+    // Таблетка связи: круг слева (переключатель), название и состояние.
+    // Круг переключает, остальная часть открывает подстраницу.
+    component Pill: Glass {
+        id: pill
         property int iconCode: 0
         property bool on: false
         property string title: ""
-        signal clicked()
+        property string subtitle: ""
+        signal circleClicked()
+        signal bodyClicked()
+
         Layout.fillWidth: true
-        Layout.fillHeight: true
-        color: on ? "#e6ffffff" : (sqMouse.containsMouse ? "#2bffffff" : Theme.tile)
-        Behavior on color { ColorAnimation { duration: 160 } }
+        Layout.preferredHeight: 64
+        hovered: bodyMa.containsMouse
 
-        // Значок и подпись в одну строку, по центру по вертикали
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 12
-            anchors.rightMargin: 12
-            spacing: 8
-            Rectangle {
-                implicitWidth: 26
-                implicitHeight: 26
-                radius: 13
-                color: sq.on ? Theme.blue : "#33ffffff"
-                Icon { anchors.centerIn: parent; code: sq.iconCode; size: 14; color: "#ffffff" }
-            }
-            Label {
-                text: sq.title
-                size: 11
-                bold: true
-                color: sq.on ? Theme.dark : Theme.fg
-                wrapMode: Text.WordWrap
-                elide: Text.ElideRight
-                maximumLineCount: 2
-                Layout.fillWidth: true
-            }
-        }
+        // Фоновая область идёт первой, чтобы кружок стоял над ней и ловил свои клики
         MouseArea {
-            id: sqMouse
+            id: bodyMa
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onClicked: sq.clicked()
+            onClicked: pill.bodyClicked()
+        }
+
+        Rectangle {
+            id: circ
+            x: 12
+            anchors.verticalCenter: parent.verticalCenter
+            width: 40
+            height: 40
+            radius: 20
+            color: pill.on ? "#ffffff" : "#33ffffff"
+            Icon {
+                anchors.centerIn: parent
+                code: pill.iconCode
+                size: 20
+                color: pill.on ? Theme.blue : "#ffffff"
+            }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: pill.circleClicked()
+            }
+        }
+
+        ColumnLayout {
+            anchors.left: circ.right
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 0
+            Label { text: pill.title; size: 13; bold: true; Layout.fillWidth: true }
+            Label {
+                text: pill.subtitle
+                size: 11
+                color: "#b3ffffff"
+                Layout.fillWidth: true
+                visible: text !== ""
+            }
         }
     }
 
-    // Связь + две квадратные плитки справа
+    // Круглая кнопка 64 px с значком
+    component CircleButton: Glass {
+        id: cb
+        property int iconCode: 0
+        signal clicked()
+
+        Layout.preferredWidth: 64
+        Layout.preferredHeight: 64
+        radius: 32
+        hovered: cbMa.containsMouse
+
+        Icon {
+            anchors.centerIn: parent
+            code: cb.iconCode
+            size: 24
+            color: "#ffffff"
+        }
+        MouseArea {
+            id: cbMa
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: cb.clicked()
+        }
+    }
+
+    // Строка 1: слева две таблетки связи, справа «Сейчас играет»
     RowLayout {
         Layout.fillWidth: true
-        Layout.preferredHeight: 116
+        Layout.preferredHeight: 140
         spacing: 12
-
-        Tile {
-            Layout.preferredWidth: 196
-            Layout.fillHeight: true
-
-            // Строки прижаты к верхнему и нижнему полю с одинаковым отступом 12
-            ColumnLayout {
-                anchors.fill: parent
-                anchors.margins: 12
-                spacing: 0
-
-                ConnRow {
-                    Layout.fillWidth: true
-                    iconCode: Networking.wifiEnabled ? 0xF0928 : 0xF092E
-                    on: Networking.wifiEnabled
-                    title: "Wi-Fi"
-                    status: !Networking.wifiEnabled ? "Выкл." : root.wifiNet ? root.wifiNet.name : "Не подключено"
-                    onToggled: Networking.wifiEnabled = !Networking.wifiEnabled
-                    onOpened: root.open("wifi")
-                }
-                Item { Layout.fillHeight: true }
-                ConnRow {
-                    Layout.fillWidth: true
-                    iconCode: root.adapter && root.adapter.enabled ? 0xF00AF : 0xF00B2
-                    on: root.adapter !== null && root.adapter.enabled
-                    title: "Bluetooth"
-                    status: !on ? "Выкл." : root.btConnected.length ? root.btConnected.map(d => d.name).join(", ") : "Вкл."
-                    onToggled: if (root.adapter) root.adapter.enabled = !root.adapter.enabled
-                    onOpened: root.open("bluetooth")
-                }
-            }
-        }
 
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 12
 
-            SquareTile {
-                iconCode: 0xF0594 // moon
-                on: root.dnd
-                title: "Не беспокоить"
-                onClicked: root.toggleDnd()
+            Pill {
+                iconCode: Networking.wifiEnabled ? 0xF0928 : 0xF092E
+                on: Networking.wifiEnabled
+                title: "Wi-Fi"
+                subtitle: !Networking.wifiEnabled ? "Выкл." : root.wifiNet ? root.wifiNet.name : "Не подключено"
+                onCircleClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+                onBodyClicked: root.open("wifi")
             }
-            SquareTile {
-                iconCode: 0xF033E // lock
-                title: "Блокировка"
-                onClicked: {
-                    root.requestClose()
-                    Quickshell.execDetached(["loginctl", "lock-session"])
-                }
-            }
-        }
-    }
-
-    // Дисплей. Высота по содержимому: поля 12 сверху и снизу ровные
-    Tile {
-        visible: root.hasBacklight
-        Layout.fillWidth: true
-        implicitHeight: displayCol.implicitHeight + 24
-        ColumnLayout {
-            id: displayCol
-            anchors.fill: parent
-            anchors.margins: 12
-            spacing: 8
-            Label { text: "Дисплей"; size: 13; bold: true; Layout.preferredHeight: 18 }
-            Slider {
-                Layout.fillWidth: true
-                iconCode: 0xF00DF // brightness
-                value: root.brightness
-                onMoved: v => root.setBrightness(v)
+            Pill {
+                iconCode: root.adapter && root.adapter.enabled ? 0xF00AF : 0xF00B2
+                on: root.adapter !== null && root.adapter.enabled
+                title: "Bluetooth"
+                subtitle: !on ? "Выкл." : root.btConnected.length ? root.btConnected.map(d => d.name).join(", ") : "Вкл."
+                onCircleClicked: if (root.adapter) root.adapter.enabled = !root.adapter.enabled
+                onBodyClicked: root.open("bluetooth")
             }
         }
-    }
 
-    // Звук — та же раскладка, что у «Дисплея»
-    Tile {
-        Layout.fillWidth: true
-        implicitHeight: soundCol.implicitHeight + 24
-        ColumnLayout {
-            id: soundCol
-            anchors.fill: parent
-            anchors.margins: 12
-            spacing: 8
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 18
-                Label { text: "Звук"; size: 13; bold: true; Layout.fillWidth: true }
-                Icon {
-                    code: 0xF0142
-                    size: 16
-                    color: Theme.muted
-                    MouseArea {
+        // Сейчас играет
+        Glass {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 14
+                spacing: 0
+
+                Rectangle {
+                    implicitWidth: 46
+                    implicitHeight: 46
+                    radius: 10
+                    color: "#33ffffff"
+                    clip: true
+                    Image {
                         anchors.fill: parent
-                        anchors.margins: -6
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: root.open("audio")
+                        source: root.player ? root.player.trackArtUrl : ""
+                        fillMode: Image.PreserveAspectCrop
+                        visible: status === Image.Ready
+                    }
+                    Icon {
+                        anchors.centerIn: parent
+                        code: 0xF075A // music
+                        size: 22
+                        color: "#ffffff"
+                        visible: !root.player || root.player.trackArtUrl === ""
+                    }
+                }
+
+                Item { Layout.fillHeight: true }
+
+                Label {
+                    text: root.player ? (root.player.trackTitle || root.player.identity) : "Ничего не играет"
+                    size: 13
+                    bold: true
+                    Layout.fillWidth: true
+                }
+                Label {
+                    text: root.player ? root.player.trackArtist : ""
+                    size: 11
+                    color: "#b3ffffff"
+                    Layout.fillWidth: true
+                }
+
+                Item { Layout.fillHeight: true }
+
+                RowLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    spacing: 20
+                    opacity: root.player ? 1 : 0.4
+                    enabled: root.player !== null
+
+                    Icon {
+                        code: 0xF04AE
+                        size: 20
+                        color: "#ffffff"
+                        MouseArea {
+                            anchors.fill: parent
+                            anchors.margins: -6
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.player.previous()
+                        }
+                    }
+                    Icon {
+                        code: root.player && root.player.isPlaying ? 0xF03E4 : 0xF040A
+                        size: 26
+                        color: "#ffffff"
+                        MouseArea {
+                            anchors.fill: parent
+                            anchors.margins: -6
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.player.togglePlaying()
+                        }
+                    }
+                    Icon {
+                        code: 0xF04AD
+                        size: 20
+                        color: "#ffffff"
+                        MouseArea {
+                            anchors.fill: parent
+                            anchors.margins: -6
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.player.next()
+                        }
                     }
                 }
             }
-            Slider {
-                Layout.fillWidth: true
-                readonly property var audio: root.sink ? root.sink.audio : null
-                iconCode: audio && audio.muted ? 0xF075F : 0xF057E
-                value: audio ? Math.min(1, audio.volume) : 0
-                opacity: audio && audio.muted ? 0.55 : 1
-                onMoved: v => { if (audio) { audio.volume = v; if (audio.muted && v > 0) audio.muted = false } }
+        }
+    }
+
+    // Строка 2: «Не беспокоить» и две круглые кнопки
+    RowLayout {
+        Layout.fillWidth: true
+        Layout.preferredHeight: 64
+        spacing: 12
+
+        Glass {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 64
+            hovered: dndMa.containsMouse
+
+            MouseArea {
+                id: dndMa
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.toggleDnd()
+            }
+            Rectangle {
+                id: dndCirc
+                x: 12
+                anchors.verticalCenter: parent.verticalCenter
+                width: 40
+                height: 40
+                radius: 20
+                color: root.dnd ? Theme.blue : "#33ffffff"
+                Behavior on color { ColorAnimation { duration: 160 } }
+                Icon {
+                    anchors.centerIn: parent
+                    code: 0xF0594 // moon
+                    size: 20
+                    color: "#ffffff"
+                }
+            }
+            ColumnLayout {
+                anchors.left: dndCirc.right
+                anchors.leftMargin: 10
+                anchors.right: parent.right
+                anchors.rightMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 0
+                // Как в macOS: плитка «Фокус», режим — в подписи
+                Label { text: "Фокус"; size: 13; bold: true; Layout.fillWidth: true }
+                Label { text: root.dnd ? "Не беспокоить" : "Выкл."; size: 11; color: "#b3ffffff"; Layout.fillWidth: true }
+            }
+        }
+
+        // Две круглые кнопки в правой половине строки
+        RowLayout {
+            Layout.preferredWidth: 162
+            Layout.preferredHeight: 64
+            spacing: 34
+
+            // Скриншот: сначала закрыть Пункт, потом снимок (ждём, пока окно уйдёт)
+            CircleButton {
+                iconCode: 0xF0104 // camera
+                onClicked: {
+                    root.requestClose()
+                    Quickshell.execDetached(["sh", "-c", "sleep 0.3; niri msg action screenshot"])
+                }
+            }
+            // Обзор окон niri
+            CircleButton {
+                iconCode: 0xF0570 // grid
+                onClicked: {
+                    root.requestClose()
+                    Quickshell.execDetached(["niri", "msg", "action", "toggle-overview"])
+                }
             }
         }
     }
 
-    // Сейчас играет
-    Tile {
-        visible: root.player !== null
+    // Строка 3: блокировка и раскладка
+    RowLayout {
         Layout.fillWidth: true
-        implicitHeight: 64
+        Layout.preferredHeight: 64
+        spacing: 12
 
-        RowLayout {
+        Pill {
+            iconCode: 0xF033E // lock
+            title: "Блокировка"
+            onCircleClicked: {
+                root.requestClose()
+                Quickshell.execDetached(["loginctl", "lock-session"])
+            }
+            onBodyClicked: {
+                root.requestClose()
+                Quickshell.execDetached(["loginctl", "lock-session"])
+            }
+        }
+        Pill {
+            iconCode: 0xF030C // keyboard
+            title: "Раскладка"
+            subtitle: root.layout
+            onCircleClicked: {
+                Quickshell.execDetached(["niri", "msg", "action", "switch-layout", "next"])
+                keyRefresh.restart()
+            }
+            onBodyClicked: {
+                Quickshell.execDetached(["niri", "msg", "action", "switch-layout", "next"])
+                keyRefresh.restart()
+            }
+        }
+    }
+
+    // Дисплей. Высота по содержимому: поля 14 сверху и снизу ровные
+    Glass {
+        visible: root.hasBacklight
+        Layout.fillWidth: true
+        implicitHeight: displayCol.implicitHeight + 28
+        radius: 26
+
+        ColumnLayout {
+            id: displayCol
             anchors.fill: parent
-            anchors.margins: 12
-            spacing: 12
+            anchors.margins: 14
+            spacing: 8
+            Label { text: "Дисплей"; size: 13; bold: true; Layout.preferredHeight: 18 }
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 10
+                Icon { code: 0xF05A8; size: 14; color: "#ffffff" } // солнце
+                ThinSlider {
+                    Layout.fillWidth: true
+                    value: root.brightness
+                    onMoved: v => root.setBrightness(v)
+                }
+                Icon { code: 0xF05A8; size: 20; color: "#ffffff" }
+            }
+        }
+    }
 
-            Rectangle {
-                implicitWidth: 40
-                implicitHeight: 40
-                radius: 10
-                color: "#33ffffff"
-                clip: true
-                Image {
-                    anchors.fill: parent
-                    source: root.player ? root.player.trackArtUrl : ""
-                    fillMode: Image.PreserveAspectCrop
-                    visible: status === Image.Ready
+    // Звук: ползунок громкости и кнопка выбора выхода
+    Glass {
+        id: soundTile
+        Layout.fillWidth: true
+        implicitHeight: soundCol.implicitHeight + 28
+        radius: 26
+
+        readonly property var audio: root.sink ? root.sink.audio : null
+
+        ColumnLayout {
+            id: soundCol
+            anchors.fill: parent
+            anchors.margins: 14
+            spacing: 8
+            Label { text: "Звук"; size: 13; bold: true; Layout.preferredHeight: 18 }
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 10
+                Icon { code: 0xF057F; size: 14; color: "#ffffff" }
+                ThinSlider {
+                    Layout.fillWidth: true
+                    value: soundTile.audio ? Math.min(1, soundTile.audio.volume) : 0
+                    opacity: soundTile.audio && soundTile.audio.muted ? 0.5 : 1
+                    onMoved: v => {
+                        const a = soundTile.audio
+                        if (a) { a.volume = v; if (a.muted && v > 0) a.muted = false }
+                    }
                 }
                 Icon {
-                    anchors.centerIn: parent
-                    code: 0xF075A // music
-                    size: 18
-                    visible: !root.player || root.player.trackArtUrl === ""
-                }
-            }
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 0
-                Label { text: root.player ? (root.player.trackTitle || root.player.identity) : ""; size: 13; bold: true; Layout.fillWidth: true }
-                Label { text: root.player ? root.player.trackArtist : ""; size: 11; color: Theme.muted; Layout.fillWidth: true }
-            }
-            Repeater {
-                model: [
-                    { code: 0xF04AE, act: "previous" },
-                    { code: 0, act: "toggle" },
-                    { code: 0xF04AD, act: "next" },
-                ]
-                delegate: Icon {
-                    required property var modelData
-                    code: modelData.code || (root.player && root.player.isPlaying ? 0xF03E4 : 0xF040A)
+                    code: soundTile.audio && soundTile.audio.muted ? 0xF075F : 0xF057E
                     size: 20
+                    color: "#ffffff"
+                }
+                Rectangle {
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    radius: 16
+                    color: "#33ffffff"
+                    Icon { anchors.centerIn: parent; code: 0xF04C3; size: 16; color: "#ffffff" }
                     MouseArea {
                         anchors.fill: parent
-                        anchors.margins: -6
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            if (!root.player) return
-                            if (modelData.act === "previous") root.player.previous()
-                            else if (modelData.act === "next") root.player.next()
-                            else root.player.togglePlaying()
-                        }
+                        onClicked: root.open("audio")
                     }
                 }
             }

@@ -143,7 +143,7 @@ ShellRoot {
 
             width: parent.width
             implicitHeight: loader.implicitHeight + Theme.pad * 2
-            radius: Theme.radius
+            radius: Theme.panelRadius
             color: Theme.card
             border.width: 1
             border.color: Theme.cardBorder
