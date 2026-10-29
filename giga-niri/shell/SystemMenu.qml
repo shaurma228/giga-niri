@@ -194,11 +194,11 @@ Scope {
         }
         Rectangle {
             anchors.left: parent.left
-            anchors.leftMargin: 6
+            anchors.leftMargin: 0
             anchors.verticalCenter: parent.verticalCenter
             width: 28
             height: 28
-            radius: 8
+            radius: Theme.innerRadius
             color: backMouse.containsMouse ? Theme.rowHover : "transparent"
             Icon { anchors.centerIn: parent; code: 0xF0141; size: 16; color: Theme.subtle }
             MouseArea {
@@ -275,7 +275,7 @@ Scope {
             id: card
 
             width: parent.width
-            implicitHeight: col.implicitHeight + 12
+            implicitHeight: col.implicitHeight + 16
             radius: Theme.radius
             color: Theme.card
             border.width: 1
@@ -303,7 +303,7 @@ Scope {
 
             ColumnLayout {
                 id: col
-                anchors { left: parent.left; right: parent.right; top: parent.top; margins: 6 }
+                anchors { left: parent.left; right: parent.right; top: parent.top; margins: 8 }
                 spacing: 0
 
                 // Главное меню: только текст, без значков (как в macOS 27)
@@ -322,13 +322,13 @@ Scope {
                             width: menuPage.width
                             height: modelData.sep ? 13 : 28
 
-                            // Разделитель: линия 1 px, отступы 6 px сверху и снизу, 12 px по бокам
+                            // Разделитель: линия 1 px, отступы 6 px сверху и снизу, 12 px от краёв карточки
                             Rectangle {
                                 visible: entry.modelData.sep === true
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                anchors.leftMargin: 12
-                                anchors.rightMargin: 12
+                                anchors.leftMargin: 4
+                                anchors.rightMargin: 4
                                 anchors.verticalCenter: parent.verticalCenter
                                 height: 1
                                 color: "#1fffffff"
@@ -337,7 +337,7 @@ Scope {
                             Rectangle {
                                 visible: entry.modelData.sep !== true
                                 anchors.fill: parent
-                                radius: 8
+                                radius: Theme.innerRadius
                                 color: entry.selected ? Theme.blue : "transparent"
 
                                 // Название обрезается перед подсказкой сочетания
@@ -433,7 +433,7 @@ Scope {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 28
                         Layout.topMargin: 10
-                        radius: 8
+                        radius: Theme.innerRadius
                         color: moreMouse.containsMouse ? Theme.blue : "transparent"
                         Label {
                             anchors.centerIn: parent
@@ -488,7 +488,7 @@ Scope {
                             required property int index
                             width: ListView.view.width
                             height: 40
-                            radius: 8
+                            radius: Theme.innerRadius
                             color: index === sys.forceSel ? Theme.blue : (wm.containsMouse ? Theme.rowHover : "transparent")
 
                             Column {
@@ -524,9 +524,9 @@ Scope {
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.topMargin: 8
-                        Layout.bottomMargin: 6
-                        Layout.leftMargin: 6
-                        Layout.rightMargin: 6
+                        Layout.bottomMargin: 0
+                        Layout.leftMargin: 0
+                        Layout.rightMargin: 0
                         spacing: 8
 
                         PillButton {
@@ -567,9 +567,9 @@ Scope {
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.topMargin: 14
-                        Layout.bottomMargin: 6
-                        Layout.leftMargin: 6
-                        Layout.rightMargin: 6
+                        Layout.bottomMargin: 0
+                        Layout.leftMargin: 0
+                        Layout.rightMargin: 0
                         spacing: 8
 
                         PillButton {
