@@ -1,5 +1,10 @@
 // Автозапуск. xwayland-satellite niri запускает сам.
 
+// Бумажник KDE: разблокировать паролем от входа (pam_kwallet), как это делает Plasma.
+// Первым, до всего, что обращается к паролям: иначе D-Bus запустит второй ksecretd
+// без пароля, и программы будут спрашивать пароль бумажника.
+spawn-at-startup "systemctl" "--user" "start" "plasma-kwallet-pam.service"
+
 // Окно ввода пароля для pkexec и программ, которым нужны права root
 spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
 

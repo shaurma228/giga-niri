@@ -187,6 +187,11 @@ giga-niri/
 - [x] Лупа в строке меню и тап Super (`super-tap.py`) открывают поиск по системе
 - [x] fuzzel остался для меню питания и подсказки по клавишам; скриншот README заменён на поиск по системе
 
+### 14. Бумажник KDE без запроса пароля
+- [x] Причина: в niri не запускалась `plasma-kwallet-pam.service` (`/usr/lib/pam_kwallet_init`), её запускает только Plasma. D-Bus поднимал второй `ksecretd` без пароля, он держал `org.freedesktop.secrets` и просил пароль. PAM (`/usr/lib/pam.d/plasmalogin`, `pam_kwallet5` в auth и session) настроен, бумажник `kdewallet` с солью (Blowfish), пароли совпадают
+- [x] Решение: `spawn-at-startup "systemctl" "--user" "start" "plasma-kwallet-pam.service"` первой строкой автозапуска niri. Проверено вживую: коллекция `kdewallet` Locked=false, `gh` видит токен
+- [ ] Проверить после следующего входа в niri: запросов пароля бумажника нет
+
 ## Пакеты (ставит пользователь)
 
 Этап 1–5:
